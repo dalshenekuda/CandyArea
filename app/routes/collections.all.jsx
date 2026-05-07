@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -59,7 +60,7 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>Products</h1>
+      <Text variant="heading-xl">Products</Text>
       <PaginatedResourceSection
         connection={products}
         resourcesClassName="products-grid"

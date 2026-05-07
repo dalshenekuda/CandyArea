@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Link} from 'react-router';
 import {useAside} from '~/components/Aside';
@@ -48,9 +49,9 @@ export function CartMain({layout, cart: originalCart}) {
     <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
       <div className="cart-details">
-        <p id="cart-lines" className="sr-only">
+        <Text id="cart-lines" className="sr-only" variant="body-sm">
           Line items
-        </p>
+        </Text>
         <div>
           <ul aria-labelledby="cart-lines">
             {(cart?.lines?.nodes ?? []).map((line) => {
@@ -89,10 +90,10 @@ function CartEmpty({hidden = false}) {
   return (
     <div hidden={hidden}>
       <br />
-      <p>
+      <Text variant="body-md">
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
         started!
-      </p>
+      </Text>
       <br />
       <Link to="/collections" onClick={close} prefetch="viewport">
         Continue shopping →

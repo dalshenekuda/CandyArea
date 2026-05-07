@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {
   Link,
   useLoaderData,
@@ -96,19 +97,19 @@ function EmptyOrders({hasFilters = false}) {
     <div>
       {hasFilters ? (
         <>
-          <p>No orders found matching your search.</p>
+          <Text variant="body-md">No orders found matching your search.</Text>
           <br />
-          <p>
+          <Text variant="body-md">
             <Link to="/account/orders">Clear filters →</Link>
-          </p>
+          </Text>
         </>
       ) : (
         <>
-          <p>You haven&apos;t placed any orders yet.</p>
+          <Text variant="body-md">You haven&apos;t placed any orders yet.</Text>
           <br />
-          <p>
+          <Text variant="body-md">
             <Link to="/collections">Start Shopping →</Link>
-          </p>
+          </Text>
         </>
       )}
     </div>
@@ -210,12 +211,18 @@ function OrderItem({order}) {
         <Link to={`/account/orders/${btoa(order.id)}`}>
           <strong>#{order.number}</strong>
         </Link>
-        <p>{new Date(order.processedAt).toDateString()}</p>
+        <Text variant="body-sm">
+          {new Date(order.processedAt).toDateString()}
+        </Text>
         {order.confirmationNumber && (
-          <p>Confirmation: {order.confirmationNumber}</p>
+          <Text variant="body-sm">
+            Confirmation: {order.confirmationNumber}
+          </Text>
         )}
-        <p>{order.financialStatus}</p>
-        {fulfillmentStatus && <p>{fulfillmentStatus}</p>}
+        <Text variant="body-sm">{order.financialStatus}</Text>
+        {fulfillmentStatus && (
+          <Text variant="body-sm">{fulfillmentStatus}</Text>
+        )}
         <Money data={order.totalPrice} />
         <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
       </fieldset>

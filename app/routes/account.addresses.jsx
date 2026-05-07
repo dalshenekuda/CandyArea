@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {
   data,
   Form,
@@ -255,7 +256,7 @@ export default function Addresses() {
 
   return (
     <div className="account-addresses">
-      <h2>Addresses</h2>
+      <Text variant="heading-lg">Addresses</Text>
       <br />
       <div>
         <div>
@@ -266,7 +267,7 @@ export default function Addresses() {
         <hr />
         <br />
         {!addresses.nodes.length ? (
-          <p>You have no addresses saved.</p>
+          <Text variant="body-md">You have no addresses saved.</Text>
         ) : (
           <ExistingAddresses
             addresses={addresses}
@@ -491,11 +492,11 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           <label htmlFor="defaultAddress">Set as default address</label>
         </div>
         {error ? (
-          <p>
+          <Text variant="body-sm">
             <mark>
               <small>{error}</small>
             </mark>
-          </p>
+          </Text>
         ) : (
           <br />
         )}

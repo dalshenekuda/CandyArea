@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Link} from 'react-router';
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import {urlWithTrackingParams} from '~/lib/search';
@@ -28,7 +29,7 @@ function SearchResultsArticles({term, articles}) {
 
   return (
     <div className="search-result">
-      <h2>Articles</h2>
+      <Text variant="heading-lg">Articles</Text>
       <div>
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
@@ -61,7 +62,7 @@ function SearchResultsPages({term, pages}) {
 
   return (
     <div className="search-result">
-      <h2>Pages</h2>
+      <Text variant="heading-lg">Pages</Text>
       <div>
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -94,7 +95,7 @@ function SearchResultsProducts({term, products}) {
 
   return (
     <div className="search-result">
-      <h2>Products</h2>
+      <Text variant="heading-lg">Products</Text>
       <Pagination connection={products}>
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const ItemsMarkup = nodes.map((product) => {
@@ -114,7 +115,7 @@ function SearchResultsProducts({term, products}) {
                     <Image data={image} alt={product.title} width={50} />
                   )}
                   <div>
-                    <p>{product.title}</p>
+                    <Text variant="body-md">{product.title}</Text>
                     <small>{price && <Money data={price} />}</small>
                   </div>
                 </Link>
@@ -148,7 +149,9 @@ function SearchResultsProducts({term, products}) {
 }
 
 function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+  return (
+    <Text variant="body-md">No results, try a different search.</Text>
+  );
 }
 
 /** @typedef {RegularSearchReturn['result']['items']} SearchItems */

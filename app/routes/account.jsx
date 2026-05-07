@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {
   data as remixData,
   Form,
@@ -48,7 +49,7 @@ export default function AccountLayout() {
 
   return (
     <div className="account">
-      <h1>{heading}</h1>
+      <Text variant="heading-xl">{heading}</Text>
       <br />
       <AccountMenu />
       <br />

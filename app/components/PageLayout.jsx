@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Await, Link} from 'react-router';
 import {Suspense, useId} from 'react';
 import {Aside} from '~/components/Aside';
@@ -50,7 +51,11 @@ export function PageLayout({
 function CartAside({cart}) {
   return (
     <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+      <Suspense
+        fallback={
+          <Text variant="body-md">Loading cart ...</Text>
+        }
+      >
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -128,10 +133,10 @@ function SearchAside() {
                     onClick={closeSearch}
                     to={`${SEARCH_ENDPOINT}?q=${term.current}`}
                   >
-                    <p>
+                    <Text as="span" variant="body-md">
                       View all results for <q>{term.current}</q>
                       &nbsp; →
-                    </p>
+                    </Text>
                   </Link>
                 ) : null}
               </>

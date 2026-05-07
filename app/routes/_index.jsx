@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Await, useLoaderData, Link} from 'react-router';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
@@ -91,7 +92,9 @@ function FeaturedCollection({collection}) {
           <Image data={image} sizes="100vw" />
         </div>
       )}
-      <h1>{collection.title}</h1>
+      <Text as="span" variant="heading-xl">
+        {collection.title}
+      </Text>
     </Link>
   );
 }
@@ -104,7 +107,7 @@ function FeaturedCollection({collection}) {
 function RecommendedProducts({products}) {
   return (
     <div className="recommended-products">
-      <h2>Recommended Products</h2>
+      <Text variant="heading-lg">Recommended Products</Text>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (

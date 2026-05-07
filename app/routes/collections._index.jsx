@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData, Link} from 'react-router';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -51,7 +52,7 @@ export default function Collections() {
 
   return (
     <div className="collections">
-      <h1>Collections</h1>
+      <Text variant="heading-xl">Collections</Text>
       <PaginatedResourceSection
         connection={collections}
         resourcesClassName="collections-grid"
@@ -91,7 +92,9 @@ function CollectionItem({collection, index}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h5>{collection.title}</h5>
+      <Text as="span" variant="subtitle-md">
+        {collection.title}
+      </Text>
     </Link>
   );
 }

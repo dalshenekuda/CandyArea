@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData} from 'react-router';
 import {
   getSelectedProductOptions,
@@ -109,7 +110,7 @@ export default function Product() {
     <div className="product">
       <ProductImage image={selectedVariant?.image} />
       <div className="product-main">
-        <h1>{title}</h1>
+        <Text variant="heading-xl">{title}</Text>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
@@ -121,9 +122,9 @@ export default function Product() {
         />
         <br />
         <br />
-        <p>
+        <Text variant="body-md">
           <strong>Description</strong>
-        </p>
+        </Text>
         <br />
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
         <br />

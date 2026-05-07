@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData, Link} from 'react-router';
 
 /**
@@ -28,7 +29,7 @@ export default function Policies() {
 
   return (
     <div className="policies">
-      <h1>Policies</h1>
+      <Text variant="heading-xl">Policies</Text>
       <div>
         {policies.map((policy) => (
           <fieldset key={policy.id}>

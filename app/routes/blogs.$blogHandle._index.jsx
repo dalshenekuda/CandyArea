@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Link, useLoaderData} from 'react-router';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
@@ -73,7 +74,7 @@ export default function Blog() {
 
   return (
     <div className="blog">
-      <h1>{blog.title}</h1>
+      <Text variant="heading-xl">{blog.title}</Text>
       <div className="blog-grid">
         <PaginatedResourceSection connection={articles}>
           {({node: article, index}) => (
@@ -115,7 +116,9 @@ function ArticleItem({article, loading}) {
             />
           </div>
         )}
-        <h3>{article.title}</h3>
+        <Text as="span" variant="heading-md">
+          {article.title}
+        </Text>
         <small>{publishedAt}</small>
       </Link>
     </div>

@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Link, useFetcher} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import React, {useRef, useEffect} from 'react';
@@ -59,7 +60,9 @@ function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
 
   return (
     <div className="predictive-search-result" key="articles">
-      <h5>Articles</h5>
+      <Text as="h5" variant="subtitle-md">
+        Articles
+      </Text>
       <ul>
         {articles.map((article) => {
           const articleUrl = urlWithTrackingParams({
@@ -99,7 +102,9 @@ function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
 
   return (
     <div className="predictive-search-result" key="collections">
-      <h5>Collections</h5>
+      <Text as="h5" variant="subtitle-md">
+        Collections
+      </Text>
       <ul>
         {collections.map((collection) => {
           const collectionUrl = urlWithTrackingParams({
@@ -139,7 +144,9 @@ function SearchResultsPredictivePages({term, pages, closeSearch}) {
 
   return (
     <div className="predictive-search-result" key="pages">
-      <h5>Pages</h5>
+      <Text as="h5" variant="subtitle-md">
+        Pages
+      </Text>
       <ul>
         {pages.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -171,7 +178,9 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
 
   return (
     <div className="predictive-search-result" key="products">
-      <h5>Products</h5>
+      <Text as="h5" variant="subtitle-md">
+        Products
+      </Text>
       <ul>
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
@@ -194,7 +203,7 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
                   />
                 )}
                 <div>
-                  <p>{product.title}</p>
+                  <Text variant="body-md">{product.title}</Text>
                   <small>{price && <Money data={price} />}</small>
                 </div>
               </Link>
@@ -236,9 +245,9 @@ function SearchResultsPredictiveEmpty({term}) {
   }
 
   return (
-    <p>
+    <Text variant="body-md">
       No results found for <q>{term.current}</q>
-    </p>
+    </Text>
   );
 }
 

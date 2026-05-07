@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Analytics, getShopAnalytics, useNonce} from '@shopify/hydrogen';
 import {
   Outlet,
@@ -11,6 +12,7 @@ import {
 } from 'react-router';
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import candyUiStyles from '@dalshenekuda/candy-ui/style.css?url';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from './components/PageLayout';
@@ -151,6 +153,7 @@ export function Layout({children}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
+        <link rel="stylesheet" href={candyUiStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
@@ -199,8 +202,12 @@ export function ErrorBoundary() {
 
   return (
     <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
+      <Text as="h1" variant="heading-lg">
+        Oops
+      </Text>
+      <Text as="h2" variant="heading-md">
+        {errorStatus}
+      </Text>
       {errorMessage && (
         <fieldset>
           <pre>{errorMessage}</pre>

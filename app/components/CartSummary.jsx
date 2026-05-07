@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useEffect, useRef} from 'react';
 import {useFetcher} from 'react-router';
@@ -11,7 +12,7 @@ export function CartSummary({cart, layout}) {
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
+      <Text variant="heading-sm">Totals</Text>
       <dl className="cart-subtotal">
         <dt>Subtotal</dt>
         <dd>
@@ -38,7 +39,9 @@ function CartCheckoutActions({checkoutUrl}) {
   return (
     <div>
       <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+        <Text as="span" variant="body-md">
+          Continue to Checkout &rarr;
+        </Text>
       </a>
       <br />
     </div>

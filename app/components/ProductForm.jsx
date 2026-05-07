@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Link, useNavigate} from 'react-router';
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
@@ -19,7 +20,9 @@ export function ProductForm({productOptions, selectedVariant}) {
 
         return (
           <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
+            <Text as="h5" variant="subtitle-md">
+              {option.name}
+            </Text>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {

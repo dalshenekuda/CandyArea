@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData} from 'react-router';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {SearchForm} from '~/components/SearchForm';
@@ -39,7 +40,7 @@ export default function SearchPage() {
 
   return (
     <div className="search">
-      <h1>Search</h1>
+      <Text variant="heading-xl">Search</Text>
       <SearchForm>
         {({inputRef}) => (
           <>
@@ -55,7 +56,11 @@ export default function SearchPage() {
           </>
         )}
       </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
+      {error && (
+        <Text color="color-danger" variant="body-md">
+          {error}
+        </Text>
+      )}
       {!term || !result?.total ? (
         <SearchResults.Empty />
       ) : (

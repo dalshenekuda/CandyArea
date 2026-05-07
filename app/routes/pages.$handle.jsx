@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData} from 'react-router';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
@@ -68,7 +69,7 @@ export default function Page() {
   return (
     <div className="page">
       <header>
-        <h1>{page.title}</h1>
+        <Text variant="heading-xl">{page.title}</Text>
       </header>
       <main dangerouslySetInnerHTML={{__html: page.body}} />
     </div>

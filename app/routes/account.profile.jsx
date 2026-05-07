@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
 import {
   data,
@@ -89,7 +90,7 @@ export default function AccountProfile() {
 
   return (
     <div className="account-profile">
-      <h2>My profile</h2>
+      <Text variant="heading-lg">My profile</Text>
       <br />
       <Form method="PUT">
         <legend>Personal information</legend>
@@ -118,11 +119,11 @@ export default function AccountProfile() {
           />
         </fieldset>
         {action?.error ? (
-          <p>
+          <Text variant="body-sm">
             <mark>
               <small>{action.error}</small>
             </mark>
-          </p>
+          </Text>
         ) : (
           <br />
         )}

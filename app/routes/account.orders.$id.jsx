@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {redirect, useLoaderData} from 'react-router';
 import {Money, Image} from '@shopify/hydrogen';
 import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
@@ -74,10 +75,14 @@ export default function OrderRoute() {
   } = useLoaderData();
   return (
     <div className="account-order">
-      <h2>Order {order.name}</h2>
-      <p>Placed on {new Date(order.processedAt).toDateString()}</p>
+      <Text variant="heading-lg">Order {order.name}</Text>
+      <Text variant="body-md">
+        Placed on {new Date(order.processedAt).toDateString()}
+      </Text>
       {order.confirmationNumber && (
-        <p>Confirmation: {order.confirmationNumber}</p>
+        <Text variant="body-md">
+          Confirmation: {order.confirmationNumber}
+        </Text>
       )}
       <br />
       <div>
@@ -101,10 +106,14 @@ export default function OrderRoute() {
               discountPercentage) && (
               <tr>
                 <th scope="row" colSpan={3}>
-                  <p>Discounts</p>
+                  <Text as="span" variant="body-sm">
+                    Discounts
+                  </Text>
                 </th>
                 <th scope="row">
-                  <p>Discounts</p>
+                  <Text as="span" variant="body-sm">
+                    Discounts
+                  </Text>
                 </th>
                 <td>
                   {discountPercentage ? (
@@ -117,10 +126,14 @@ export default function OrderRoute() {
             )}
             <tr>
               <th scope="row" colSpan={3}>
-                <p>Subtotal</p>
+                <Text as="span" variant="body-sm">
+                  Subtotal
+                </Text>
               </th>
               <th scope="row">
-                <p>Subtotal</p>
+                <Text as="span" variant="body-sm">
+                  Subtotal
+                </Text>
               </th>
               <td>
                 <Money data={order.subtotal} />
@@ -131,7 +144,9 @@ export default function OrderRoute() {
                 Tax
               </th>
               <th scope="row">
-                <p>Tax</p>
+                <Text as="span" variant="body-sm">
+                  Tax
+                </Text>
               </th>
               <td>
                 <Money data={order.totalTax} />
@@ -142,7 +157,9 @@ export default function OrderRoute() {
                 Total
               </th>
               <th scope="row">
-                <p>Total</p>
+                <Text as="span" variant="body-sm">
+                  Total
+                </Text>
               </th>
               <td>
                 <Money data={order.totalPrice} />
@@ -151,36 +168,38 @@ export default function OrderRoute() {
           </tfoot>
         </table>
         <div>
-          <h3>Shipping Address</h3>
+          <Text variant="heading-md">Shipping Address</Text>
           {order?.shippingAddress ? (
             <address>
-              <p>{order.shippingAddress.name}</p>
+              <Text variant="body-md">{order.shippingAddress.name}</Text>
               {order.shippingAddress.formatted ? (
-                <p>{order.shippingAddress.formatted}</p>
+                <Text variant="body-md">{order.shippingAddress.formatted}</Text>
               ) : (
                 ''
               )}
               {order.shippingAddress.formattedArea ? (
-                <p>{order.shippingAddress.formattedArea}</p>
+                <Text variant="body-md">
+                  {order.shippingAddress.formattedArea}
+                </Text>
               ) : (
                 ''
               )}
             </address>
           ) : (
-            <p>No shipping address defined</p>
+            <Text variant="body-md">No shipping address defined</Text>
           )}
-          <h3>Status</h3>
+          <Text variant="heading-md">Status</Text>
           <div>
-            <p>{fulfillmentStatus}</p>
+            <Text variant="body-md">{fulfillmentStatus}</Text>
           </div>
         </div>
       </div>
       <br />
-      <p>
+      <Text variant="body-md">
         <a target="_blank" href={order.statusPageUrl} rel="noreferrer">
           View Order Status →
         </a>
-      </p>
+      </Text>
     </div>
   );
 }
@@ -199,7 +218,7 @@ function OrderLineRow({lineItem}) {
             </div>
           )}
           <div>
-            <p>{lineItem.title}</p>
+            <Text variant="body-md">{lineItem.title}</Text>
             <small>{lineItem.variantTitle}</small>
           </div>
         </div>

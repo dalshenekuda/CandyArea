@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {CartForm, Image} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
@@ -47,9 +48,9 @@ export function CartLineItem({layout, line, childrenMap}) {
               }
             }}
           >
-            <p>
+            <Text variant="body-md">
               <strong>{product.title}</strong>
-            </p>
+            </Text>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
           <ul>
@@ -67,9 +68,9 @@ export function CartLineItem({layout, line, childrenMap}) {
 
       {lineItemChildren ? (
         <div>
-          <p id={childrenLabelId} className="sr-only">
+          <Text id={childrenLabelId} className="sr-only" variant="body-sm">
             Line items with {product.title}
-          </p>
+          </Text>
           <ul aria-labelledby={childrenLabelId} className="cart-line-children">
             {lineItemChildren.map((childLine) => (
               <CartLineItem

@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {useLoaderData} from 'react-router';
 import {Image} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
@@ -85,13 +86,11 @@ export default function Article() {
 
   return (
     <div className="article">
-      <h1>
-        {title}
-        <div>
-          <time dateTime={article.publishedAt}>{publishedDate}</time> &middot;{' '}
-          <address>{author?.name}</address>
-        </div>
-      </h1>
+      <Text variant="heading-xl">{title}</Text>
+      <div>
+        <time dateTime={article.publishedAt}>{publishedDate}</time> &middot;{' '}
+        <address>{author?.name}</address>
+      </div>
 
       {image && <Image data={image} sizes="90vw" loading="eager" />}
       <div

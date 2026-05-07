@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
@@ -30,7 +31,9 @@ export function ProductItem({product, loading}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
-      <h4>{product.title}</h4>
+      <Text as="span" variant="heading-sm">
+        {product.title}
+      </Text>
       <small>
         <Money data={product.priceRange.minVariantPrice} />
       </small>

@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {createContext, useContext, useEffect, useState} from 'react';
 
 /**
@@ -45,7 +46,9 @@ export function Aside({children, heading, type}) {
       <button className="close-outside" onClick={close} />
       <aside>
         <header>
-          <h3>{heading}</h3>
+          <Text as="h3" variant="heading-md">
+            {heading}
+          </Text>
           <button className="close reset" onClick={close} aria-label="Close">
             &times;
           </button>
