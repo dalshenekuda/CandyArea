@@ -1,3 +1,5 @@
+import {NotFoundPage} from '@fsd/pages/not-found';
+
 /**
  * @param {Route.LoaderArgs}
  */
@@ -7,9 +9,6 @@ export async function loader({request}) {
   });
 }
 
-export default function CatchAllPage() {
-  return null;
-}
+export default NotFoundPage;
 
 /** @typedef {import('./+types/$').Route} Route */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

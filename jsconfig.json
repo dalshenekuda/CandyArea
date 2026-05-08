@@ -8,6 +8,9 @@
     "paths": {
       "~/*": [
         "app/*"
+      ],
+      "@fsd/*": [
+        "src/fsd/*"
       ]
     }
   },
@@ -16,6 +19,8 @@
     "app/**/*.js",
     "app/**/*.jsx",
     "app/**/*.d.ts",
+    "src/fsd/**/*.js",
+    "src/fsd/**/*.jsx",
     "*.js",
     "*.jsx",
     "*.d.ts",

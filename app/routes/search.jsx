@@ -1,9 +1,6 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {useLoaderData} from 'react-router';
-import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {SearchForm} from '~/components/SearchForm';
-import {SearchResults} from '~/components/SearchResults';
+import {getPaginationVariables} from '@shopify/hydrogen';
 import {getEmptyPredictiveSearchResult} from '~/lib/search';
+import {SearchPage} from '@fsd/pages/search';
 
 /**
  * @type {Route.MetaFunction}
@@ -30,54 +27,7 @@ export async function loader({request, context}) {
   return await searchPromise;
 }
 
-/**
- * Renders the /search route
- */
-export default function SearchPage() {
-  /** @type {LoaderReturnData} */
-  const {type, term, result, error} = useLoaderData();
-  if (type === 'predictive') return null;
-
-  return (
-    <div className="search">
-      <Text variant="heading-xl">Search</Text>
-      <SearchForm>
-        {({inputRef}) => (
-          <>
-            <input
-              defaultValue={term}
-              name="q"
-              placeholder="Search…"
-              ref={inputRef}
-              type="search"
-            />
-            &nbsp;
-            <button type="submit">Search</button>
-          </>
-        )}
-      </SearchForm>
-      {error && (
-        <Text color="color-danger" variant="body-md">
-          {error}
-        </Text>
-      )}
-      {!term || !result?.total ? (
-        <SearchResults.Empty />
-      ) : (
-        <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
-            <div>
-              <SearchResults.Products products={products} term={term} />
-              <SearchResults.Pages pages={pages} term={term} />
-              <SearchResults.Articles articles={articles} term={term} />
-            </div>
-          )}
-        </SearchResults>
-      )}
-      <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
-    </div>
-  );
-}
+export default SearchPage;
 
 /**
  * Regular search query and fragments

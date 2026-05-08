@@ -1,24 +1,17 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {useLoaderData, Link} from 'react-router';
-import {getPaginationVariables, Image} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {getPaginationVariables} from '@shopify/hydrogen';
+import {CollectionsPage} from '@fsd/pages/collections';
 
 /**
  * @param {Route.LoaderArgs} args
  */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
   return {...deferredData, ...criticalData};
 }
 
 /**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {Route.LoaderArgs}
  */
 async function loadCriticalData({context, request}) {
@@ -30,74 +23,19 @@ async function loadCriticalData({context, request}) {
     context.storefront.query(COLLECTIONS_QUERY, {
       variables: paginationVariables,
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {collections};
 }
 
 /**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {Route.LoaderArgs}
  */
-function loadDeferredData({context}) {
+function loadDeferredData() {
   return {};
 }
 
-export default function Collections() {
-  /** @type {LoaderReturnData} */
-  const {collections} = useLoaderData();
-
-  return (
-    <div className="collections">
-      <Text variant="heading-xl">Collections</Text>
-      <PaginatedResourceSection
-        connection={collections}
-        resourcesClassName="collections-grid"
-      >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
-        )}
-      </PaginatedResourceSection>
-    </div>
-  );
-}
-
-/**
- * @param {{
- *   collection: CollectionFragment;
- *   index: number;
- * }}
- */
-function CollectionItem({collection, index}) {
-  return (
-    <Link
-      className="collection-item"
-      key={collection.id}
-      to={`/collections/${collection.handle}`}
-      prefetch="intent"
-    >
-      {collection?.image && (
-        <Image
-          alt={collection.image.altText || collection.title}
-          aspectRatio="1/1"
-          data={collection.image}
-          loading={index < 3 ? 'eager' : undefined}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <Text as="span" variant="subtitle-md">
-        {collection.title}
-      </Text>
-    </Link>
-  );
-}
+export default CollectionsPage;
 
 const COLLECTIONS_QUERY = `#graphql
   fragment Collection on Collection {
@@ -140,5 +78,3 @@ const COLLECTIONS_QUERY = `#graphql
 `;
 
 /** @typedef {import('./+types/collections._index').Route} Route */
-/** @typedef {import('storefrontapi.generated').CollectionFragment} CollectionFragment */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

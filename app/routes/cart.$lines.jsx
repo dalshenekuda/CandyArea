@@ -1,22 +1,9 @@
 import {redirect} from 'react-router';
+import {CartLinesPage} from '@fsd/pages/cart-lines';
 
 /**
  * Automatically creates a new cart based on the URL and redirects straight to checkout.
- * Expected URL structure:
- * ```js
- * /cart/<variant_id>:<quantity>
  *
- * ```
- *
- * More than one `<variant_id>:<quantity>` separated by a comma, can be supplied in the URL, for
- * carts with more than one product variant.
- *
- * @example
- * Example path creating a cart with two product variants, different quantities, and a discount code in the querystring:
- * ```js
- * /cart/41007289663544:1,41007289696312:2?discount=HYDROBOARD
- *
- * ```
  * @param {Route.LoaderArgs}
  */
 export async function loader({request, context, params}) {
@@ -40,7 +27,6 @@ export async function loader({request, context, params}) {
   const discount = searchParams.get('discount');
   const discountArray = discount ? [discount] : [];
 
-  // create a cart
   const result = await cart.create({
     lines: linesMap,
     discountCodes: discountArray,
@@ -54,10 +40,8 @@ export async function loader({request, context, params}) {
     });
   }
 
-  // Update cart id in cookie
   const headers = cart.setCartId(cartResult.id);
 
-  // redirect to checkout
   if (cartResult.checkoutUrl) {
     return redirect(cartResult.checkoutUrl, {headers});
   } else {
@@ -65,9 +49,6 @@ export async function loader({request, context, params}) {
   }
 }
 
-export default function Component() {
-  return null;
-}
+export default CartLinesPage;
 
 /** @typedef {import('./+types/cart.$lines').Route} Route */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

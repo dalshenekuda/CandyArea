@@ -12,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': path.join(rootDir, 'app'),
+      '@fsd': path.join(rootDir, 'src/fsd'),
     },
   },
   plugins: [hydrogen(), oxygen(), reactRouter(), tsconfigPaths()],

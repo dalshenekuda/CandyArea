@@ -1,5 +1,4 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {useLoaderData, Link} from 'react-router';
+import {PoliciesPage} from '@fsd/pages/policies';
 
 /**
  * @param {Route.LoaderArgs}
@@ -23,23 +22,7 @@ export async function loader({context}) {
   return {policies};
 }
 
-export default function Policies() {
-  /** @type {LoaderReturnData} */
-  const {policies} = useLoaderData();
-
-  return (
-    <div className="policies">
-      <Text variant="heading-xl">Policies</Text>
-      <div>
-        {policies.map((policy) => (
-          <fieldset key={policy.id}>
-            <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
-          </fieldset>
-        ))}
-      </div>
-    </div>
-  );
-}
+export default PoliciesPage;
 
 const POLICIES_QUERY = `#graphql
   fragment PolicyItem on ShopPolicy {
@@ -72,6 +55,3 @@ const POLICIES_QUERY = `#graphql
 `;
 
 /** @typedef {import('./+types/policies._index').Route} Route */
-/** @typedef {import('storefrontapi.generated').PoliciesQuery} PoliciesQuery */
-/** @typedef {import('storefrontapi.generated').PolicyItemFragment} PolicyItemFragment */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

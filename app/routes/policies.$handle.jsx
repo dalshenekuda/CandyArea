@@ -1,5 +1,4 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {Link, useLoaderData} from 'react-router';
+import {PolicyPage} from '@fsd/pages/policy';
 
 /**
  * @type {Route.MetaFunction}
@@ -40,25 +39,8 @@ export async function loader({params, context}) {
   return {policy};
 }
 
-export default function Policy() {
-  /** @type {LoaderReturnData} */
-  const {policy} = useLoaderData();
+export default PolicyPage;
 
-  return (
-    <div className="policy">
-      <br />
-      <br />
-      <div>
-        <Link to="/policies">← Back to Policies</Link>
-      </div>
-      <br />
-      <Text variant="heading-xl">{policy.title}</Text>
-      <div dangerouslySetInnerHTML={{__html: policy.body}} />
-    </div>
-  );
-}
-
-// NOTE: https://shopify.dev/docs/api/storefront/latest/objects/Shop
 const POLICY_CONTENT_QUERY = `#graphql
   fragment Policy on ShopPolicy {
     body
@@ -92,13 +74,4 @@ const POLICY_CONTENT_QUERY = `#graphql
   }
 `;
 
-/**
- * @typedef {keyof Pick<
- *   Shop,
- *   'privacyPolicy' | 'shippingPolicy' | 'termsOfService' | 'refundPolicy'
- * >} SelectedPolicies
- */
-
 /** @typedef {import('./+types/policies.$handle').Route} Route */
-/** @typedef {import('@shopify/hydrogen/storefront-api-types').Shop} Shop */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */

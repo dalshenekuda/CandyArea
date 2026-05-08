@@ -1,7 +1,6 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {useLoaderData, data} from 'react-router';
+import {data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
-import {CartMain} from '~/components/CartMain';
+import {CartPage} from '@fsd/pages/cart';
 
 /**
  * @type {Route.MetaFunction}
@@ -45,10 +44,8 @@ export async function action({request, context}) {
     case CartForm.ACTIONS.DiscountCodesUpdate: {
       const formDiscountCode = inputs.discountCode;
 
-      // User inputted discount code
       const discountCodes = formDiscountCode ? [formDiscountCode] : [];
 
-      // Combine discount codes already applied on cart
       discountCodes.push(...inputs.discountCodes);
 
       result = await cart.updateDiscountCodes(discountCodes);
@@ -108,20 +105,7 @@ export async function loader({context}) {
   return await cart.get();
 }
 
-export default function Cart() {
-  /** @type {LoaderReturnData} */
-  const cart = useLoaderData();
-
-  return (
-    <div className="cart">
-      <Text variant="heading-xl">Cart</Text>
-      <CartMain layout="page" cart={cart} />
-    </div>
-  );
-}
+export default CartPage;
 
 /** @typedef {import('react-router').HeadersFunction} HeadersFunction */
 /** @typedef {import('./+types/cart').Route} Route */
-/** @typedef {import('@shopify/hydrogen').CartQueryDataReturn} CartQueryDataReturn */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */
-/** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof action>} ActionReturnData */
