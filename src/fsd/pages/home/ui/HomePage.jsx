@@ -50,8 +50,8 @@ function FeaturedCollection({collection}) {
 function RecommendedProducts({products}) {
   return (
     <div className="recommended-products">
-      <Text variant="heading-lg">Recommended Products</Text>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Text variant="heading-lg mb-lg">Recommended Products</Text>
+      <Suspense fallback={<Text variant="body-md">Loading...</Text>}>
         <Await resolve={products}>
           {(response) => (
             <div className="recommended-products-grid">

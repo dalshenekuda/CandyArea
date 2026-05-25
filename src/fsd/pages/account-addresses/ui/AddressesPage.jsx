@@ -15,7 +15,9 @@ export default function AddressesPage() {
       <br />
       <div>
         <div>
-          <legend>Create address</legend>
+          <Text as="legend" variant="subtitle-md">
+            Create address
+          </Text>
           <NewAddressForm key={addresses.nodes.length} />
         </div>
         <br />
@@ -62,7 +64,9 @@ function NewAddressForm() {
             formMethod="POST"
             type="submit"
           >
-            {stateForMethod('POST') !== 'idle' ? 'Creating' : 'Create'}
+            <Text as="span" variant="body-md">
+              {stateForMethod('POST') !== 'idle' ? 'Creating' : 'Create'}
+            </Text>
           </button>
         </div>
       )}
@@ -76,7 +80,9 @@ function NewAddressForm() {
 function ExistingAddresses({addresses, defaultAddress}) {
   return (
     <div>
-      <legend>Existing addresses</legend>
+      <Text as="legend" variant="subtitle-md">
+        Existing addresses
+      </Text>
       {addresses.nodes.map((address) => (
         <AddressForm
           key={address.id}
@@ -91,14 +97,18 @@ function ExistingAddresses({addresses, defaultAddress}) {
                 formMethod="PUT"
                 type="submit"
               >
-                {stateForMethod('PUT') !== 'idle' ? 'Saving' : 'Save'}
+                <Text as="span" variant="body-md">
+                  {stateForMethod('PUT') !== 'idle' ? 'Saving' : 'Save'}
+                </Text>
               </button>
               <button
                 disabled={stateForMethod('DELETE') !== 'idle'}
                 formMethod="DELETE"
                 type="submit"
               >
-                {stateForMethod('DELETE') !== 'idle' ? 'Deleting' : 'Delete'}
+                <Text as="span" variant="body-md">
+                  {stateForMethod('DELETE') !== 'idle' ? 'Deleting' : 'Delete'}
+                </Text>
               </button>
             </div>
           )}
@@ -127,7 +137,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
     <Form id={addressId}>
       <fieldset>
         <input type="hidden" name="addressId" defaultValue={addressId} />
-        <label htmlFor="firstName">First name*</label>
+        <Text as="label" htmlFor="firstName" variant="body-sm">
+          First name*
+        </Text>
         <input
           aria-label="First name"
           autoComplete="given-name"
@@ -138,7 +150,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="lastName">Last name*</label>
+        <Text as="label" htmlFor="lastName" variant="body-sm">
+          Last name*
+        </Text>
         <input
           aria-label="Last name"
           autoComplete="family-name"
@@ -149,7 +163,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="company">Company</label>
+        <Text as="label" htmlFor="company" variant="body-sm">
+          Company
+        </Text>
         <input
           aria-label="Company"
           autoComplete="organization"
@@ -159,7 +175,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           placeholder="Company"
           type="text"
         />
-        <label htmlFor="address1">Address line*</label>
+        <Text as="label" htmlFor="address1" variant="body-sm">
+          Address line*
+        </Text>
         <input
           aria-label="Address line 1"
           autoComplete="address-line1"
@@ -170,7 +188,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="address2">Address line 2</label>
+        <Text as="label" htmlFor="address2" variant="body-sm">
+          Address line 2
+        </Text>
         <input
           aria-label="Address line 2"
           autoComplete="address-line2"
@@ -180,7 +200,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           placeholder="Address line 2"
           type="text"
         />
-        <label htmlFor="city">City*</label>
+        <Text as="label" htmlFor="city" variant="body-sm">
+          City*
+        </Text>
         <input
           aria-label="City"
           autoComplete="address-level2"
@@ -191,7 +213,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="zoneCode">State / Province*</label>
+        <Text as="label" htmlFor="zoneCode" variant="body-sm">
+          State / Province*
+        </Text>
         <input
           aria-label="State/Province"
           autoComplete="address-level1"
@@ -202,7 +226,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="zip">Zip / Postal Code*</label>
+        <Text as="label" htmlFor="zip" variant="body-sm">
+          Zip / Postal Code*
+        </Text>
         <input
           aria-label="Zip"
           autoComplete="postal-code"
@@ -213,7 +239,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
-        <label htmlFor="territoryCode">Country Code*</label>
+        <Text as="label" htmlFor="territoryCode" variant="body-sm">
+          Country Code*
+        </Text>
         <input
           aria-label="territoryCode"
           autoComplete="country"
@@ -225,7 +253,9 @@ function AddressForm({addressId, address, defaultAddress, children}) {
           type="text"
           maxLength={2}
         />
-        <label htmlFor="phoneNumber">Phone</label>
+        <Text as="label" htmlFor="phoneNumber" variant="body-sm">
+          Phone
+        </Text>
         <input
           aria-label="Phone Number"
           autoComplete="tel"
@@ -243,13 +273,13 @@ function AddressForm({addressId, address, defaultAddress, children}) {
             name="defaultAddress"
             type="checkbox"
           />
-          <label htmlFor="defaultAddress">Set as default address</label>
+          <Text as="label" htmlFor="defaultAddress" variant="body-sm">
+            Set as default address
+          </Text>
         </div>
         {error ? (
-          <Text variant="body-sm">
-            <mark>
-              <small>{error}</small>
-            </mark>
+          <Text color="color-danger" variant="body-sm">
+            {error}
           </Text>
         ) : (
           <br />

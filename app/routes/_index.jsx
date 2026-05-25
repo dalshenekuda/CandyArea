@@ -77,6 +77,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     id
     title
     handle
+    description
     priceRange {
       minVariantPrice {
         amount

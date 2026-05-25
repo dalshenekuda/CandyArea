@@ -13,6 +13,8 @@ body {
     sans-serif;
   margin: 0;
   padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 h1,
@@ -53,18 +55,19 @@ p {
 }
 
 a {
-  color: #000;
+  color: var(--color-text);
   text-decoration: none;
 }
 
 a:hover {
+  color: var(--color-brand);
   text-decoration: underline;
   cursor: pointer;
 }
 
 hr {
   border-bottom: none;
-  border-top: 1px solid #000;
+  border-top: 1px solid var(--color-border);
   margin: 0;
 }
 
@@ -79,7 +82,8 @@ body {
 }
 
 body > main {
-  margin: 0 1rem 1rem 1rem;
+  margin: 0 var(--spacing-md, 1rem) var(--spacing-md, 1rem);
+  padding: var(--spacing-md, 1rem) 0;
 }
 
 section {
@@ -104,8 +108,10 @@ form {
 }
 
 input {
-  border-radius: 4px;
-  border: 1px solid #000;
+  border-radius: var(--radius-xs, 4px);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
   font-size: 1rem;
   margin-bottom: 0.5rem;
   margin-top: 0.25rem;
@@ -132,8 +138,9 @@ dl {
 }
 
 code {
-  background: #ddd;
-  border-radius: 4px;
+  background: var(--color-border-subtle);
+  border-radius: var(--radius-xs, 4px);
+  color: var(--color-text);
   font-family: monospace;
   padding: 0.25rem;
 }

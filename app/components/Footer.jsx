@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Suspense} from 'react';
 import {Await, NavLink} from 'react-router';
 
@@ -46,7 +47,9 @@ function FooterMenu({menu, primaryDomainUrl, publicStoreDomain}) {
         const isExternal = !url.startsWith('/');
         return isExternal ? (
           <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
+            <Text as="span" variant="body-md">
+              {item.title}
+            </Text>
           </a>
         ) : (
           <NavLink
@@ -56,7 +59,9 @@ function FooterMenu({menu, primaryDomainUrl, publicStoreDomain}) {
             style={activeLinkStyle}
             to={url}
           >
-            {item.title}
+            <Text as="span" variant="body-md">
+              {item.title}
+            </Text>
           </NavLink>
         );
       })}

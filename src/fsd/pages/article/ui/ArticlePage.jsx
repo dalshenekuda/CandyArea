@@ -17,8 +17,13 @@ export function ArticlePage() {
     <div className="article">
       <Text variant="heading-xl">{title}</Text>
       <div>
-        <time dateTime={article.publishedAt}>{publishedDate}</time> &middot;{' '}
-        <address>{author?.name}</address>
+        <Text as="time" dateTime={article.publishedAt} variant="body-sm">
+          {publishedDate}
+        </Text>{' '}
+        &middot;{' '}
+        <Text as="address" variant="body-sm">
+          {author?.name}
+        </Text>
       </div>
 
       {image && <Image data={image} sizes="90vw" loading="eager" />}

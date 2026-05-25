@@ -1,8 +1,9 @@
-import {Text} from '@dalshenekuda/candy-ui';
+import {Button, Text} from '@dalshenekuda/candy-ui';
 import {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
+import {useTheme} from '~/hooks/useTheme';
 
 /**
  * @param {HeaderProps}
@@ -12,7 +13,9 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        <Text as="span" variant="body-md" weight="bold">
+          {shop.name}
+        </Text>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -52,7 +55,9 @@ export function HeaderMenu({
           style={activeLinkStyle}
           to="/"
         >
-          Home
+          <Text as="span" variant="body-md">
+            Home
+          </Text>
         </NavLink>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
@@ -75,7 +80,9 @@ export function HeaderMenu({
             style={activeLinkStyle}
             to={url}
           >
-            {item.title}
+            <Text as="span" variant="body-md">
+              {item.title}
+            </Text>
           </NavLink>
         );
       })}
@@ -90,10 +97,28 @@ function HeaderCtas({isLoggedIn, cart}) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
+      <ThemeToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+        <Suspense
+          fallback={
+            <Text as="span" variant="body-md">
+              Sign in
+            </Text>
+          }
+        >
+          <Await
+            resolve={isLoggedIn}
+            errorElement={
+              <Text as="span" variant="body-md">
+                Sign in
+              </Text>
+            }
+          >
+            {(isLoggedIn) => (
+              <Text as="span" variant="body-md">
+                {isLoggedIn ? 'Account' : 'Sign in'}
+              </Text>
+            )}
           </Await>
         </Suspense>
       </NavLink>
@@ -121,8 +146,28 @@ function SearchToggle() {
   const {open} = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
-      Search
+      <Text as="span" variant="body-md">
+        Search
+      </Text>
     </button>
+  );
+}
+
+function ThemeToggle() {
+  const {isDark, toggle} = useTheme();
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={toggle}
+      aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+    >
+      <Text as="span" variant="body-sm">
+        {isDark ? 'Light' : 'Dark'}
+      </Text>
+    </Button>
   );
 }
 
@@ -147,7 +192,9 @@ function CartBadge({count}) {
         });
       }}
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
+      <Text as="span" variant="body-md">
+        Cart {count === null ? '\u00a0' : count}
+      </Text>
     </a>
   );
 }
@@ -222,7 +269,7 @@ const FALLBACK_HEADER_MENU = {
 function activeLinkStyle({isActive, isPending}) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
+    color: isPending ? 'var(--color-text-muted)' : undefined,
   };
 }
 

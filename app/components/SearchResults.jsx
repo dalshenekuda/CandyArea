@@ -41,7 +41,9 @@ function SearchResultsArticles({term, articles}) {
           return (
             <div className="search-results-item" key={article.id}>
               <Link prefetch="intent" to={articleUrl}>
-                {article.title}
+                <Text as="span" variant="body-md">
+                  {article.title}
+                </Text>
               </Link>
             </div>
           );
@@ -74,7 +76,9 @@ function SearchResultsPages({term, pages}) {
           return (
             <div className="search-results-item" key={page.id}>
               <Link prefetch="intent" to={pageUrl}>
-                {page.title}
+                <Text as="span" variant="body-md">
+                  {page.title}
+                </Text>
               </Link>
             </div>
           );
@@ -116,7 +120,9 @@ function SearchResultsProducts({term, products}) {
                   )}
                   <div>
                     <Text variant="body-md">{product.title}</Text>
-                    <small>{price && <Money data={price} />}</small>
+                    <Text as="span" variant="body-sm">
+                      {price && <Money data={price} />}
+                    </Text>
                   </div>
                 </Link>
               </div>
@@ -127,7 +133,15 @@ function SearchResultsProducts({term, products}) {
             <div>
               <div>
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {isLoading ? (
+                    <Text as="span" variant="body-md">
+                      Loading...
+                    </Text>
+                  ) : (
+                    <Text as="span" variant="body-sm">
+                      ↑ Load previous
+                    </Text>
+                  )}
                 </PreviousLink>
               </div>
               <div>
@@ -136,7 +150,15 @@ function SearchResultsProducts({term, products}) {
               </div>
               <div>
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {isLoading ? (
+                    <Text as="span" variant="body-md">
+                      Loading...
+                    </Text>
+                  ) : (
+                    <Text as="span" variant="body-sm">
+                      Load more ↓
+                    </Text>
+                  )}
                 </NextLink>
               </div>
             </div>

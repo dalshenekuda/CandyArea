@@ -113,7 +113,9 @@ export function ProductForm({productOptions, selectedVariant}) {
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        <Text as="span" variant="body-md">
+          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        </Text>
       </AddToCartButton>
     </div>
   );
@@ -129,7 +131,13 @@ function ProductOptionSwatch({swatch, name}) {
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
 
-  if (!image && !color) return name;
+  if (!image && !color) {
+    return (
+      <Text as="span" variant="body-sm">
+        {name}
+      </Text>
+    );
+  }
 
   return (
     <div

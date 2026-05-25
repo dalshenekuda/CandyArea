@@ -85,7 +85,11 @@ function SearchAside() {
                 list={queriesDatalistId}
               />
               &nbsp;
-              <button onClick={goToSearch}>Search</button>
+              <button onClick={goToSearch}>
+                <Text as="span" variant="body-md">
+                  Search
+                </Text>
+              </button>
             </>
           )}
         </SearchFormPredictive>
@@ -95,7 +99,7 @@ function SearchAside() {
             const {articles, collections, pages, products, queries} = items;
 
             if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
+              return <Text variant="body-md">Loading...</Text>;
             }
 
             if (!total) {

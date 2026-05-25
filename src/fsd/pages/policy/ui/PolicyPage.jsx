@@ -10,7 +10,11 @@ export function PolicyPage() {
       <br />
       <br />
       <div>
-        <Link to="/policies">← Back to Policies</Link>
+        <Link to="/policies">
+          <Text as="span" variant="body-md">
+            ← Back to Policies
+          </Text>
+        </Link>
       </div>
       <br />
       <Text variant="heading-xl">{policy.title}</Text>

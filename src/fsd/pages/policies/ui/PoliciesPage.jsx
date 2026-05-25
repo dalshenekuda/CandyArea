@@ -11,7 +11,11 @@ export function PoliciesPage() {
       <div>
         {policies.map((policy) => (
           <fieldset key={policy.id}>
-            <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
+            <Link to={`/policies/${policy.handle}`}>
+              <Text as="span" variant="body-md">
+                {policy.title}
+              </Text>
+            </Link>
           </fieldset>
         ))}
       </div>

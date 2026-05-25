@@ -59,7 +59,11 @@ function EmptyOrders({hasFilters = false}) {
           <Text variant="body-md">No orders found matching your search.</Text>
           <br />
           <Text variant="body-md">
-            <Link to="/account/orders">Clear filters →</Link>
+            <Link to="/account/orders">
+              <Text as="span" variant="body-md">
+                Clear filters →
+              </Text>
+            </Link>
           </Text>
         </>
       ) : (
@@ -67,7 +71,11 @@ function EmptyOrders({hasFilters = false}) {
           <Text variant="body-md">You haven&apos;t placed any orders yet.</Text>
           <br />
           <Text variant="body-md">
-            <Link to="/collections">Start Shopping →</Link>
+            <Link to="/collections">
+              <Text as="span" variant="body-md">
+                Start Shopping →
+              </Text>
+            </Link>
           </Text>
         </>
       )}
@@ -116,7 +124,9 @@ function OrderSearchForm({currentFilters}) {
       aria-label="Search orders"
     >
       <fieldset className="order-search-fieldset">
-        <legend className="order-search-legend">Filter Orders</legend>
+        <Text as="legend" className="order-search-legend" variant="subtitle-md">
+          Filter Orders
+        </Text>
 
         <div className="order-search-inputs">
           <input
@@ -139,7 +149,9 @@ function OrderSearchForm({currentFilters}) {
 
         <div className="order-search-buttons">
           <button type="submit" disabled={isSearching}>
-            {isSearching ? 'Searching' : 'Search'}
+            <Text as="span" variant="body-md">
+              {isSearching ? 'Searching' : 'Search'}
+            </Text>
           </button>
           {hasFilters && (
             <button
@@ -150,7 +162,9 @@ function OrderSearchForm({currentFilters}) {
                 formRef.current?.reset();
               }}
             >
-              Clear
+              <Text as="span" variant="body-md">
+                Clear
+              </Text>
             </button>
           )}
         </div>
@@ -168,7 +182,9 @@ function OrderItem({order}) {
     <>
       <fieldset>
         <Link to={`/account/orders/${btoa(order.id)}`}>
-          <strong>#{order.number}</strong>
+          <Text as="span" variant="body-md" weight="bold">
+            #{order.number}
+          </Text>
         </Link>
         <Text variant="body-sm">
           {new Date(order.processedAt).toDateString()}
@@ -182,8 +198,14 @@ function OrderItem({order}) {
         {fulfillmentStatus && (
           <Text variant="body-sm">{fulfillmentStatus}</Text>
         )}
-        <Money data={order.totalPrice} />
-        <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
+        <Text as="span" variant="body-sm">
+          <Money data={order.totalPrice} />
+        </Text>
+        <Link to={`/account/orders/${btoa(order.id)}`}>
+          <Text as="span" variant="body-md">
+            View Order →
+          </Text>
+        </Link>
       </fieldset>
       <br />
     </>

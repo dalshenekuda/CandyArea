@@ -27,10 +27,18 @@ export function AccountOrderDetailPage() {
         <table>
           <thead>
             <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
+              <Text as="th" scope="col" variant="body-sm" weight="semibold">
+                Product
+              </Text>
+              <Text as="th" scope="col" variant="body-sm" weight="semibold">
+                Price
+              </Text>
+              <Text as="th" scope="col" variant="body-sm" weight="semibold">
+                Quantity
+              </Text>
+              <Text as="th" scope="col" variant="body-sm" weight="semibold">
+                Total
+              </Text>
             </tr>
           </thead>
           <tbody>
@@ -42,64 +50,64 @@ export function AccountOrderDetailPage() {
             {((discountValue && discountValue.amount) ||
               discountPercentage) && (
               <tr>
-                <th scope="row" colSpan={3}>
-                  <Text as="span" variant="body-sm">
-                    Discounts
-                  </Text>
-                </th>
-                <th scope="row">
-                  <Text as="span" variant="body-sm">
-                    Discounts
-                  </Text>
-                </th>
+                <Text as="th" scope="row" colSpan={3} variant="body-sm" weight="semibold">
+                  Discounts
+                </Text>
+                <Text as="th" scope="row" variant="body-sm" weight="semibold">
+                  Discounts
+                </Text>
                 <td>
                   {discountPercentage ? (
-                    <span>-{discountPercentage}% OFF</span>
+                    <Text as="span" variant="body-sm">
+                      -{discountPercentage}% OFF
+                    </Text>
                   ) : (
-                    discountValue && <Money data={discountValue} />
+                    discountValue && (
+                      <Text as="span" variant="body-sm">
+                        <Money data={discountValue} />
+                      </Text>
+                    )
                   )}
                 </td>
               </tr>
             )}
             <tr>
-              <th scope="row" colSpan={3}>
-                <Text as="span" variant="body-sm">
-                  Subtotal
-                </Text>
-              </th>
-              <th scope="row">
-                <Text as="span" variant="body-sm">
-                  Subtotal
-                </Text>
-              </th>
+              <Text as="th" scope="row" colSpan={3} variant="body-sm" weight="semibold">
+                Subtotal
+              </Text>
+              <Text as="th" scope="row" variant="body-sm" weight="semibold">
+                Subtotal
+              </Text>
               <td>
-                <Money data={order.subtotal} />
+                <Text as="span" variant="body-sm">
+                  <Money data={order.subtotal} />
+                </Text>
               </td>
             </tr>
             <tr>
-              <th scope="row" colSpan={3}>
+              <Text as="th" scope="row" colSpan={3} variant="body-sm" weight="semibold">
                 Tax
-              </th>
-              <th scope="row">
-                <Text as="span" variant="body-sm">
-                  Tax
-                </Text>
-              </th>
+              </Text>
+              <Text as="th" scope="row" variant="body-sm" weight="semibold">
+                Tax
+              </Text>
               <td>
-                <Money data={order.totalTax} />
+                <Text as="span" variant="body-sm">
+                  <Money data={order.totalTax} />
+                </Text>
               </td>
             </tr>
             <tr>
-              <th scope="row" colSpan={3}>
+              <Text as="th" scope="row" colSpan={3} variant="body-sm" weight="semibold">
                 Total
-              </th>
-              <th scope="row">
-                <Text as="span" variant="body-sm">
-                  Total
-                </Text>
-              </th>
+              </Text>
+              <Text as="th" scope="row" variant="body-sm" weight="semibold">
+                Total
+              </Text>
               <td>
-                <Money data={order.totalPrice} />
+                <Text as="span" variant="body-sm">
+                  <Money data={order.totalPrice} />
+                </Text>
               </td>
             </tr>
           </tfoot>
@@ -134,7 +142,9 @@ export function AccountOrderDetailPage() {
       <br />
       <Text variant="body-md">
         <a target="_blank" href={order.statusPageUrl} rel="noreferrer">
-          View Order Status →
+          <Text as="span" variant="body-md">
+            View Order Status →
+          </Text>
         </a>
       </Text>
     </div>
@@ -156,16 +166,26 @@ function OrderLineRow({lineItem}) {
           )}
           <div>
             <Text variant="body-md">{lineItem.title}</Text>
-            <small>{lineItem.variantTitle}</small>
+            <Text as="span" variant="body-sm">
+              {lineItem.variantTitle}
+            </Text>
           </div>
         </div>
       </td>
       <td>
-        <Money data={lineItem.price} />
+        <Text as="span" variant="body-md">
+          <Money data={lineItem.price} />
+        </Text>
       </td>
-      <td>{lineItem.quantity}</td>
       <td>
-        <Money data={lineItem.totalDiscount} />
+        <Text as="span" variant="body-md">
+          {lineItem.quantity}
+        </Text>
+      </td>
+      <td>
+        <Text as="span" variant="body-md">
+          <Money data={lineItem.totalDiscount} />
+        </Text>
       </td>
     </tr>
   );

@@ -16,6 +16,7 @@ import candyUiStyles from '@dalshenekuda/candy-ui/style.css?url';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from './components/PageLayout';
+import {themeInitScript} from '~/lib/theme';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -152,6 +153,10 @@ export function Layout({children}) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{__html: themeInitScript}}
+        />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={candyUiStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
@@ -210,7 +215,9 @@ export function ErrorBoundary() {
       </Text>
       {errorMessage && (
         <fieldset>
-          <pre>{errorMessage}</pre>
+          <Text as="pre" variant="body-sm">
+            {errorMessage}
+          </Text>
         </fieldset>
       )}
     </div>

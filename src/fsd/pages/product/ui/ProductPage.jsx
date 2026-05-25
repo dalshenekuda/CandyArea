@@ -45,8 +45,8 @@ export function ProductPage() {
         />
         <br />
         <br />
-        <Text variant="body-md">
-          <strong>Description</strong>
+        <Text variant="subtitle-md" weight="bold">
+          Description
         </Text>
         <br />
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />

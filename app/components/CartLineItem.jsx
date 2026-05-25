@@ -48,17 +48,17 @@ export function CartLineItem({layout, line, childrenMap}) {
               }
             }}
           >
-            <Text variant="body-md">
-              <strong>{product.title}</strong>
+            <Text as="span" variant="body-md" weight="bold">
+              {product.title}
             </Text>
           </Link>
           <ProductPrice price={line?.cost?.totalAmount} />
           <ul>
             {selectedOptions.map((option) => (
               <li key={option.name}>
-                <small>
+                <Text as="span" variant="body-sm">
                   {option.name}: {option.value}
-                </small>
+                </Text>
               </li>
             ))}
           </ul>
@@ -101,7 +101,9 @@ function CartLineQuantity({line}) {
 
   return (
     <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
+      <Text as="span" variant="body-sm">
+        Quantity: {quantity}
+      </Text>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
@@ -147,7 +149,9 @@ function CartLineRemoveButton({lineIds, disabled}) {
       inputs={{lineIds}}
     >
       <button disabled={disabled} type="submit">
-        Remove
+        <Text as="span" variant="body-sm">
+          Remove
+        </Text>
       </button>
     </CartForm>
   );

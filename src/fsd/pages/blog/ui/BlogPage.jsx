@@ -55,7 +55,9 @@ function ArticleItem({article, loading}) {
         <Text as="span" variant="heading-md">
           {article.title}
         </Text>
-        <small>{publishedAt}</small>
+        <Text as="time" dateTime={article.publishedAt} variant="body-sm">
+          {publishedAt}
+        </Text>
       </Link>
     </div>
   );

@@ -15,8 +15,11 @@ export function MockShopNotice() {
           this project yet.
         </Text>
         <Text variant="body-md">
-          Link a store by running <code>npx shopify hydrogen link</code> in your
-          terminal.
+          Link a store by running{' '}
+          <Text as="code" variant="body-sm">
+            npx shopify hydrogen link
+          </Text>{' '}
+          in your terminal.
         </Text>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import {Text} from '@dalshenekuda/candy-ui';
 import {Money} from '@shopify/hydrogen';
 
 /**
@@ -11,15 +12,25 @@ export function ProductPrice({price, compareAtPrice}) {
     <div className="product-price">
       {compareAtPrice ? (
         <div className="product-price-on-sale">
-          {price ? <Money data={price} /> : null}
+          {price ? (
+            <Text as="span" variant="body-md">
+              <Money data={price} />
+            </Text>
+          ) : null}
           <s>
-            <Money data={compareAtPrice} />
+            <Text as="span" variant="body-md">
+              <Money data={compareAtPrice} />
+            </Text>
           </s>
         </div>
       ) : price ? (
-        <Money data={price} />
+        <Text as="span" variant="body-md">
+          <Money data={price} />
+        </Text>
       ) : (
-        <span>&nbsp;</span>
+        <Text as="span" variant="body-md">
+          {'\u00a0'}
+        </Text>
       )}
     </div>
   );

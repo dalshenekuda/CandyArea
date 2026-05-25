@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {Text} from '@dalshenekuda/candy-ui';
 import {Pagination} from '@shopify/hydrogen';
 
 /**
@@ -20,7 +20,15 @@ export function PaginatedResourceSection({
         return (
           <div>
             <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              {isLoading ? (
+                <Text as="span" variant="body-md">
+                  Loading...
+                </Text>
+              ) : (
+                <Text as="span" variant="body-sm">
+                  ↑ Load previous
+                </Text>
+              )}
             </PreviousLink>
             {resourcesClassName ? (
               <div className={resourcesClassName}>{resourcesMarkup}</div>
@@ -28,7 +36,15 @@ export function PaginatedResourceSection({
               resourcesMarkup
             )}
             <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              {isLoading ? (
+                <Text as="span" variant="body-md">
+                  Loading...
+                </Text>
+              ) : (
+                <Text as="span" variant="body-sm">
+                  Load more ↓
+                </Text>
+              )}
             </NextLink>
           </div>
         );

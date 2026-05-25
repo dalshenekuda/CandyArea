@@ -96,7 +96,9 @@ function CartEmpty({hidden = false}) {
       </Text>
       <br />
       <Link to="/collections" onClick={close} prefetch="viewport">
-        Continue shopping →
+        <Text as="span" variant="body-md">
+          Continue shopping →
+        </Text>
       </Link>
     </div>
   );

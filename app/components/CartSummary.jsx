@@ -14,12 +14,18 @@ export function CartSummary({cart, layout}) {
     <div aria-labelledby="cart-summary" className={className}>
       <Text variant="heading-sm">Totals</Text>
       <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
+        <Text as="dt" variant="body-sm">
+          Subtotal
+        </Text>
         <dd>
           {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
+            <Text as="span" variant="body-md">
+              <Money data={cart?.cost?.subtotalAmount} />
+            </Text>
           ) : (
-            '-'
+            <Text as="span" variant="body-md">
+              -
+            </Text>
           )}
         </dd>
       </dl>
@@ -64,13 +70,19 @@ function CartDiscounts({discountCodes}) {
       {/* Have existing discount, display it with a remove option */}
       <dl hidden={!codes.length}>
         <div>
-          <dt>Discount(s)</dt>
+          <Text as="dt" variant="body-sm">
+            Discount(s)
+          </Text>
           <UpdateDiscountForm>
             <div className="cart-discount">
-              <code>{codes?.join(', ')}</code>
+              <Text as="code" variant="body-sm">
+                {codes?.join(', ')}
+              </Text>
               &nbsp;
               <button type="submit" aria-label="Remove discount">
-                Remove
+                <Text as="span" variant="body-sm">
+                  Remove
+                </Text>
               </button>
             </div>
           </UpdateDiscountForm>
@@ -80,9 +92,14 @@ function CartDiscounts({discountCodes}) {
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
         <div>
-          <label htmlFor="discount-code-input" className="sr-only">
+          <Text
+            as="label"
+            htmlFor="discount-code-input"
+            className="sr-only"
+            variant="body-sm"
+          >
             Discount code
-          </label>
+          </Text>
           <input
             id="discount-code-input"
             type="text"
@@ -91,7 +108,9 @@ function CartDiscounts({discountCodes}) {
           />
           &nbsp;
           <button type="submit" aria-label="Apply discount code">
-            Apply
+            <Text as="span" variant="body-sm">
+              Apply
+            </Text>
           </button>
         </div>
       </UpdateDiscountForm>
@@ -138,15 +157,25 @@ function CartGiftCard({giftCardCodes}) {
     <div>
       {giftCardCodes && giftCardCodes.length > 0 && (
         <dl>
-          <dt>Applied Gift Card(s)</dt>
+          <Text as="dt" variant="body-sm">
+            Applied Gift Card(s)
+          </Text>
           {giftCardCodes.map((giftCard) => (
             <RemoveGiftCardForm key={giftCard.id} giftCardId={giftCard.id}>
               <div className="cart-discount">
-                <code>***{giftCard.lastCharacters}</code>
+                <Text as="code" variant="body-sm">
+                  ***{giftCard.lastCharacters}
+                </Text>
                 &nbsp;
-                <Money data={giftCard.amountUsed} />
+                <Text as="span" variant="body-sm">
+                  <Money data={giftCard.amountUsed} />
+                </Text>
                 &nbsp;
-                <button type="submit">Remove</button>
+                <button type="submit">
+                  <Text as="span" variant="body-sm">
+                    Remove
+                  </Text>
+                </button>
               </div>
             </RemoveGiftCardForm>
           ))}
@@ -163,7 +192,9 @@ function CartGiftCard({giftCardCodes}) {
           />
           &nbsp;
           <button type="submit" disabled={giftCardAddFetcher.state !== 'idle'}>
-            Apply
+            <Text as="span" variant="body-sm">
+              Apply
+            </Text>
           </button>
         </div>
       </AddGiftCardForm>

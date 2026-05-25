@@ -83,7 +83,9 @@ function SearchResultsPredictiveArticles({term, articles, closeSearch}) {
                   />
                 )}
                 <div>
-                  <span>{article.title}</span>
+                  <Text as="span" variant="body-md">
+                    {article.title}
+                  </Text>
                 </div>
               </Link>
             </li>
@@ -125,7 +127,9 @@ function SearchResultsPredictiveCollections({term, collections, closeSearch}) {
                   />
                 )}
                 <div>
-                  <span>{collection.title}</span>
+                  <Text as="span" variant="body-md">
+                    {collection.title}
+                  </Text>
                 </div>
               </Link>
             </li>
@@ -159,7 +163,9 @@ function SearchResultsPredictivePages({term, pages, closeSearch}) {
             <li className="predictive-search-result-item" key={page.id}>
               <Link onClick={closeSearch} to={pageUrl}>
                 <div>
-                  <span>{page.title}</span>
+                  <Text as="span" variant="body-md">
+                    {page.title}
+                  </Text>
                 </div>
               </Link>
             </li>
@@ -204,7 +210,9 @@ function SearchResultsPredictiveProducts({term, products, closeSearch}) {
                 )}
                 <div>
                   <Text variant="body-md">{product.title}</Text>
-                  <small>{price && <Money data={price} />}</small>
+                  <Text as="span" variant="body-sm">
+                    {price && <Money data={price} />}
+                  </Text>
                 </div>
               </Link>
             </li>

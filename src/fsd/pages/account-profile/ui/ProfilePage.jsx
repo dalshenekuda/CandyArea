@@ -17,9 +17,13 @@ export function ProfilePage() {
       <Text variant="heading-lg">My profile</Text>
       <br />
       <Form method="PUT">
-        <legend>Personal information</legend>
+        <Text as="legend" variant="subtitle-md">
+          Personal information
+        </Text>
         <fieldset>
-          <label htmlFor="firstName">First name</label>
+          <Text as="label" htmlFor="firstName" variant="body-sm">
+            First name
+          </Text>
           <input
             id="firstName"
             name="firstName"
@@ -30,7 +34,9 @@ export function ProfilePage() {
             defaultValue={customer?.firstName ?? ''}
             minLength={2}
           />
-          <label htmlFor="lastName">Last name</label>
+          <Text as="label" htmlFor="lastName" variant="body-sm">
+            Last name
+          </Text>
           <input
             id="lastName"
             name="lastName"
@@ -43,16 +49,16 @@ export function ProfilePage() {
           />
         </fieldset>
         {actionData?.error ? (
-          <Text variant="body-sm">
-            <mark>
-              <small>{actionData.error}</small>
-            </mark>
+          <Text color="color-danger" variant="body-sm">
+            {actionData.error}
           </Text>
         ) : (
           <br />
         )}
         <button type="submit" disabled={state !== 'idle'}>
-          {state !== 'idle' ? 'Updating' : 'Update'}
+          <Text as="span" variant="body-md">
+            {state !== 'idle' ? 'Updating' : 'Update'}
+          </Text>
         </button>
       </Form>
     </div>

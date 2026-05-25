@@ -23,7 +23,11 @@ export function SearchPage() {
               type="search"
             />
             &nbsp;
-            <button type="submit">Search</button>
+            <button type="submit">
+              <Text as="span" variant="body-md">
+                Search
+              </Text>
+            </button>
           </>
         )}
       </SearchForm>
