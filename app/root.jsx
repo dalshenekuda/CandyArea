@@ -14,6 +14,7 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import candyUiStyles from '@dalshenekuda/candy-ui/style.css?url';
 import resetStyles from '~/styles/reset.css?url';
+import tailwindStyles from '~/styles/tailwind.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from './components/PageLayout';
 import {themeInitScript} from '~/lib/theme';
@@ -159,6 +160,7 @@ export function Layout({children}) {
         />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={candyUiStyles}></link>
+        <link rel="stylesheet" href={tailwindStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
