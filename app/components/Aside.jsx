@@ -1,15 +1,16 @@
-import {Text} from '@dalshenekuda/candy-ui';
-import {createContext, useContext, useEffect, useState} from 'react';
+import {
+  Aside as AsideRoot,
+  AsideBody,
+  AsideCloseButton,
+  AsideContent,
+  AsideHeader,
+  AsideTitle,
+  Text,
+} from '@dalshenekuda/candy-ui';
+import {createContext, useContext, useState} from 'react';
 
 /**
- * A side bar component with Overlay
- * @example
- * ```jsx
- * <Aside type="search" heading="SEARCH">
- *  <input type="search" />
- *  ...
- * </Aside>
- * ```
+ * Side panel (cart, search, mobile menu) backed by Candy UI Aside.
  * @param {{
  *   children?: React.ReactNode;
  *   type: AsideType;
@@ -20,42 +21,25 @@ export function Aside({children, heading, type}) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    if (expanded) {
-      document.addEventListener(
-        'keydown',
-        function handler(event) {
-          if (event.key === 'Escape') {
-            close();
-          }
-        },
-        {signal: abortController.signal},
-      );
-    }
-    return () => abortController.abort();
-  }, [close, expanded]);
-
   return (
-    <div
-      aria-modal
-      className={`overlay ${expanded ? 'expanded' : ''}`}
-      role="dialog"
+    <AsideRoot
+      open={expanded}
+      onOpenChange={(open) => {
+        if (!open) close();
+      }}
     >
-      <button className="close-outside" onClick={close} />
-      <aside>
-        <header>
-          <Text as="h3" variant="heading-md">
-            {heading}
-          </Text>
-          <button className="close reset" onClick={close} aria-label="Close">
-            &times;
-          </button>
-        </header>
-        <main>{children}</main>
-      </aside>
-    </div>
+      <AsideContent side="right" aria-describedby={undefined}>
+        <AsideHeader>
+          <AsideTitle asChild>
+            <Text as="h3" variant="heading-md">
+              {heading}
+            </Text>
+          </AsideTitle>
+          <AsideCloseButton />
+        </AsideHeader>
+        <AsideBody>{children}</AsideBody>
+      </AsideContent>
+    </AsideRoot>
   );
 }
 

@@ -1,27 +1,34 @@
-import {Text} from '@dalshenekuda/candy-ui';
+import {Card, CardContent, CardHeader, Text} from '@dalshenekuda/candy-ui';
 
 export function MockShopNotice() {
   return (
-    <section
-      className="mock-shop-notice"
+    <Card
+      className="my-4 border-l-4 border-l-brand"
+      role="region"
       aria-labelledby="mock-shop-notice-heading"
     >
-      <div className="inner">
+      <CardHeader>
         <Text as="h2" id="mock-shop-notice-heading" variant="heading-lg">
           Welcome to Hydrogen!
         </Text>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-sm">
         <Text variant="body-md">
-          You&rsquo;re seeing mocked products because no store is connected to
+          You are seeing mocked products because no store is connected to
           this project yet.
         </Text>
         <Text variant="body-md">
           Link a store by running{' '}
-          <Text as="code" variant="body-sm">
+          <Text
+            as="code"
+            variant="body-sm"
+            className="rounded bg-surface-raised px-xs py-px"
+          >
             npx shopify hydrogen link
           </Text>{' '}
           in your terminal.
         </Text>
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

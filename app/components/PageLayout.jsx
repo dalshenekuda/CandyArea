@@ -35,7 +35,7 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main className="site-container main-content">{children}</main>
       <Footer
         footer={footer}
         header={header}

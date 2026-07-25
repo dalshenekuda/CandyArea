@@ -27,30 +27,55 @@ export function ProductPage() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product;
+  const {title, description, descriptionHtml} = product;
+  const summary = description?.trim();
 
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
+      <div className="product-media">
+        <ProductImage image={selectedVariant?.image} />
+      </div>
       <div className="product-main">
-        <Text variant="heading-xl">{title}</Text>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <Text variant="subtitle-md" weight="bold">
-          Description
-        </Text>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+        <div className="product-summary flex flex-col gap-sm">
+          <Text variant="heading-lg" weight="semibold">
+            {title}
+          </Text>
+          {summary ? (
+            <Text
+              variant="heading-md"
+              color="color-text-muted"
+              className="line-clamp-3"
+            >
+              {summary}
+            </Text>
+          ) : null}
+          <ProductPrice
+            variant="card"
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+        </div>
+        <div className="product-form-section">
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+          />
+        </div>
+        {descriptionHtml ? (
+          <div className="product-description">
+            <Text
+              variant="heading-md"
+              color="color-text-muted"
+              className="mb-sm"
+            >
+              Description
+            </Text>
+            <div
+              className="product-description-content"
+              dangerouslySetInnerHTML={{__html: descriptionHtml}}
+            />
+          </div>
+        ) : null}
       </div>
       <Analytics.ProductView
         data={{
