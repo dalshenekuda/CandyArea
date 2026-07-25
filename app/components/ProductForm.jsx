@@ -1,6 +1,6 @@
-import {Text} from '@dalshenekuda/candy-ui';
+import {Badge, Button, Text} from '@dalshenekuda/candy-ui';
 import {Link, useNavigate} from 'react-router';
-import {AddToCartButton} from './AddToCartButton';
+import {ProductCartStepper} from './ProductCartStepper';
 import {useAside} from './Aside';
 
 /**
@@ -12,6 +12,9 @@ import {useAside} from './Aside';
 export function ProductForm({productOptions, selectedVariant}) {
   const navigate = useNavigate();
   const {open} = useAside();
+  const isAvailable =
+    selectedVariant != null && selectedVariant.availableForSale;
+
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -36,28 +39,31 @@ export function ProductForm({productOptions, selectedVariant}) {
                   swatch,
                 } = value;
 
+                const variantButtonVariant = selected ? 'default' : 'outline';
+
                 if (isDifferentProduct) {
                   // SEO
                   // When the variant is a combined listing child product
                   // that leads to a different url, we need to render it
                   // as an anchor tag
                   return (
-                    <Link
-                      className="product-options-item"
+                    <Button
                       key={option.name + name}
-                      prefetch="intent"
-                      preventScrollReset
-                      replace
-                      to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      asChild
+                      variant={variantButtonVariant}
+                      size="sm"
+                      className={!available ? 'opacity-50' : undefined}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
-                    </Link>
+                      <Link
+                        prefetch="intent"
+                        preventScrollReset
+                        replace
+                        to={`/products/${handle}?${variantUriQuery}`}
+                        aria-pressed={selected}
+                      >
+                        <ProductOptionSwatch swatch={swatch} name={name} />
+                      </Link>
+                    </Button>
                   );
                 } else {
                   // SEO
@@ -66,17 +72,14 @@ export function ProductForm({productOptions, selectedVariant}) {
                   // the variant so that SEO bots do not index these as
                   // duplicated links
                   return (
-                    <button
+                    <Button
                       type="button"
-                      className={`product-options-item${exists && !selected ? ' link' : ''}`}
                       key={option.name + name}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      variant={variantButtonVariant}
+                      size="sm"
                       disabled={!exists}
+                      aria-pressed={selected}
+                      className={!available ? 'opacity-50' : undefined}
                       onClick={() => {
                         if (!selected) {
                           void navigate(`?${variantUriQuery}`, {
@@ -87,7 +90,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                       }}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
-                    </button>
+                    </Button>
                   );
                 }
               })}
@@ -96,27 +99,17 @@ export function ProductForm({productOptions, selectedVariant}) {
           </div>
         );
       })}
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          open('cart');
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-              ]
-            : []
-        }
-      >
-        <Text as="span" variant="body-md">
-          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-        </Text>
-      </AddToCartButton>
+      {!isAvailable ? (
+        <Badge variant="destructive" className="mb-sm">
+          Sold out
+        </Badge>
+      ) : null}
+      <ProductCartStepper
+        selectedVariant={selectedVariant}
+        availableForSale={isAvailable}
+        onAdded={() => open('cart')}
+        size="lg"
+      />
     </div>
   );
 }

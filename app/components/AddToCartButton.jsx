@@ -1,3 +1,4 @@
+import {Button} from '@dalshenekuda/candy-ui';
 import {CartForm} from '@shopify/hydrogen';
 
 /**
@@ -25,13 +26,16 @@ export function AddToCartButton({
             type="hidden"
             value={JSON.stringify(analytics)}
           />
-          <button
+          <Button
             type="submit"
+            variant="default"
+            size="lg"
+            className="w-full"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
           >
             {children}
-          </button>
+          </Button>
         </>
       )}
     </CartForm>

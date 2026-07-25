@@ -1,4 +1,4 @@
-import {Text} from '@dalshenekuda/candy-ui';
+import {AddToCartStepper, Button, Text} from '@dalshenekuda/candy-ui';
 import {CartForm, Image} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
@@ -96,37 +96,32 @@ export function CartLineItem({layout, line, childrenMap}) {
 function CartLineQuantity({line}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {id: lineId, quantity, isOptimistic} = line;
+  const disabled = !!isOptimistic;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
     <div className="cart-line-quantity">
-      <Text as="span" variant="body-sm">
-        Quantity: {quantity}
-      </Text>
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
-          name="decrease-quantity"
-          value={prevQuantity}
-        >
-          <span>&#8722; </span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-          disabled={!!isOptimistic}
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
+      <AddToCartStepper
+        variant="compact"
+        quantity={quantity}
+        disabled={disabled}
+        decreaseButton={
+          <CartLineUpdateForm
+            lines={[{id: lineId, quantity: prevQuantity}]}
+            disabled={disabled || quantity <= 1}
+            ariaLabel="Decrease quantity"
+          />
+        }
+        increaseButton={
+          <CartLineUpdateForm
+            lines={[{id: lineId, quantity: nextQuantity}]}
+            disabled={disabled}
+            ariaLabel="Increase quantity"
+          />
+        }
+      />
+      <CartLineRemoveButton lineIds={[lineId]} disabled={disabled} />
     </div>
   );
 }
@@ -148,23 +143,30 @@ function CartLineRemoveButton({lineIds, disabled}) {
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
-        <Text as="span" variant="body-sm">
+      {(fetcher) => (
+        <Button
+          type="submit"
+          variant="ghost"
+          size="sm"
+          className="h-8 px-sm text-xs text-text-muted"
+          disabled={disabled || fetcher.state !== 'idle'}
+        >
           Remove
-        </Text>
-      </button>
+        </Button>
+      )}
     </CartForm>
   );
 }
 
 /**
  * @param {{
- *   children: React.ReactNode;
  *   lines: CartLineUpdateInput[];
+ *   disabled?: boolean;
+ *   ariaLabel: string;
  * }}
  */
-function CartLineUpdateButton({children, lines}) {
-  const lineIds = lines.map((line) => line.id);
+function CartLineUpdateForm({lines, disabled, ariaLabel}) {
+  const lineIds = lines.map((item) => item.id);
 
   return (
     <CartForm
@@ -173,7 +175,18 @@ function CartLineUpdateButton({children, lines}) {
       action={CartForm.ACTIONS.LinesUpdate}
       inputs={{lines}}
     >
-      {children}
+      {(fetcher) => (
+        <Button
+          type="submit"
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 shrink-0"
+          disabled={disabled || fetcher.state !== 'idle'}
+          aria-label={ariaLabel}
+        >
+          <span aria-hidden>{ariaLabel.includes('Increase') ? '+' : '−'}</span>
+        </Button>
+      )}
     </CartForm>
   );
 }
