@@ -12,7 +12,7 @@ export function HomePage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <CandyCollectionProducts collection={data.candyCollection} />
     </div>
   );
 }
@@ -44,23 +44,20 @@ function FeaturedCollection({collection}) {
 
 /**
  * @param {{
- *   products: Promise<RecommendedProductsQuery | null>;
+ *   collection: Promise<CandyCollectionQuery | null>;
  * }}
  */
-function RecommendedProducts({products}) {
+function CandyCollectionProducts({collection}) {
   return (
     <div className="recommended-products">
-      <Text variant="heading-lg mb-lg">Recommended Products</Text>
       <Suspense fallback={<Text variant="body-md">Loading...</Text>}>
-        <Await resolve={products}>
+        <Await resolve={collection}>
           {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : null}
-            </div>
+              <div className="recommended-products-grid">
+                {response?.collection?.products.nodes.map((product) => (
+                  <ProductItem key={product.id} product={product} />
+                )) ?? null}
+              </div>
           )}
         </Await>
       </Suspense>
@@ -70,5 +67,5 @@ function RecommendedProducts({products}) {
 }
 
 /** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
-/** @typedef {import('storefrontapi.generated').RecommendedProductsQuery} RecommendedProductsQuery */
+/** @typedef {import('storefrontapi.generated').CandyCollectionQuery} CandyCollectionQuery */
 /** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof import('~/routes/_index').loader>} LoaderReturnData */

@@ -35,15 +35,15 @@ async function loadCriticalData({context}) {
  * @param {Route.LoaderArgs}
  */
 function loadDeferredData({context}) {
-  const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
+  const candyCollection = context.storefront
+    .query(CANDY_COLLECTION_QUERY)
     .catch((error) => {
       console.error(error);
       return null;
     });
 
   return {
-    recommendedProducts,
+    candyCollection,
   };
 }
 
@@ -72,7 +72,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
 `;
 
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+const CANDY_COLLECTION_QUERY = `#graphql
   fragment RecommendedProduct on Product {
     id
     title
@@ -91,12 +91,30 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       width
       height
     }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    variants(first: 1) {
       nodes {
-        ...RecommendedProduct
+        id
+        availableForSale
+        compareAtPrice {
+          amount
+          currencyCode
+        }
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+  query CandyCollection($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    collection(handle: "candy-v1") {
+      id
+      title
+      products(first: 20) {
+        nodes {
+          ...RecommendedProduct
+        }
       }
     }
   }
