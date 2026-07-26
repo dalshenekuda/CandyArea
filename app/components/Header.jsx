@@ -1,9 +1,10 @@
 import {Button, Text} from '@dalshenekuda/candy-ui';
-import {Suspense} from 'react';
+import {Suspense, useEffect, useRef} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {useTheme} from '~/hooks/useTheme';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @param {HeaderProps}
@@ -14,8 +15,8 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     <header className="header">
       <div className="site-container header-inner">
         <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-          <Text as="span" variant="body-md" weight="bold">
-            {shop.name}
+          <Text as="span" variant="display-lg" color="color-text">
+            {STORE_DISPLAY_NAME}
           </Text>
         </NavLink>
         <HeaderMenu
@@ -57,7 +58,7 @@ export function HeaderMenu({
           style={activeLinkStyle}
           to="/"
         >
-          <Text as="span" variant="body-md">
+          <Text as="span" variant="meta-md">
             Home
           </Text>
         </NavLink>
@@ -65,7 +66,6 @@ export function HeaderMenu({
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
@@ -82,7 +82,7 @@ export function HeaderMenu({
             style={activeLinkStyle}
             to={url}
           >
-            <Text as="span" variant="body-md">
+            <Text as="span" variant="meta-md">
               {item.title}
             </Text>
           </NavLink>
@@ -103,7 +103,7 @@ function HeaderCtas({isLoggedIn, cart}) {
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense
           fallback={
-            <Text as="span" variant="body-md">
+            <Text as="span" variant="meta-md">
               Sign in
             </Text>
           }
@@ -111,13 +111,13 @@ function HeaderCtas({isLoggedIn, cart}) {
           <Await
             resolve={isLoggedIn}
             errorElement={
-              <Text as="span" variant="body-md">
+              <Text as="span" variant="meta-md">
                 Sign in
               </Text>
             }
           >
             {(isLoggedIn) => (
-              <Text as="span" variant="body-md">
+              <Text as="span" variant="meta-md">
                 {isLoggedIn ? 'Account' : 'Sign in'}
               </Text>
             )}
@@ -136,6 +136,7 @@ function HeaderMenuMobileToggle() {
     <button
       className="header-menu-mobile-toggle reset"
       onClick={() => open('mobile')}
+      aria-label="Open menu"
     >
       <Text as="span" variant="heading-md">
         ☰
@@ -148,7 +149,7 @@ function SearchToggle() {
   const {open} = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
-      <Text as="span" variant="body-md">
+      <Text as="span" variant="meta-md">
         Search
       </Text>
     </button>
@@ -161,13 +162,14 @@ function ThemeToggle() {
   return (
     <Button
       type="button"
-      variant="outline"
-      size="sm"
+      variant="ghost"
+      size="icon"
+      className="theme-toggle-btn"
       onClick={toggle}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
     >
-      <Text as="span" variant="body-sm">
-        {isDark ? 'Light' : 'Dark'}
+      <Text as="span" variant="body-md" aria-hidden>
+        {isDark ? '☀' : '☾'}
       </Text>
     </Button>
   );
@@ -179,6 +181,15 @@ function ThemeToggle() {
 function CartBadge({count}) {
   const {open} = useAside();
   const {publish, shop, cart, prevCart} = useAnalytics();
+  const prevCount = useRef(count ?? 0);
+  const popKey = useRef(0);
+
+  useEffect(() => {
+    if (count != null && count > prevCount.current) {
+      popKey.current += 1;
+    }
+    prevCount.current = count ?? 0;
+  }, [count]);
 
   return (
     <a
@@ -194,8 +205,11 @@ function CartBadge({count}) {
         });
       }}
     >
-      <Text as="span" variant="body-md">
-        Cart {count === null ? '\u00a0' : count}
+      <Text as="span" variant="meta-md">
+        Cart{' '}
+        <span key={popKey.current} className={count ? 'cart-count-pop' : undefined}>
+          {count === null ? '\u00a0' : count}
+        </span>
       </Text>
     </a>
   );

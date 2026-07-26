@@ -154,6 +154,8 @@ export function Layout({children}) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#2E52D9" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#0E0D0C" media="(prefers-color-scheme: dark)" />
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{__html: themeInitScript}}
