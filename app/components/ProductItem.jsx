@@ -5,6 +5,19 @@ import {useVariantUrl} from '~/lib/variants';
 import {useAside} from '~/components/Aside';
 import {ProductCartStepper} from '~/components/ProductCartStepper';
 
+const FLAVOR_TAGS = ['sour', 'milk', 'fruity', 'mint'];
+
+/**
+ * @param {string[] | undefined} tags
+ */
+function getFlavorMeta(tags) {
+  if (!tags?.length) return undefined;
+  const match = tags.find((tag) =>
+    FLAVOR_TAGS.includes(tag.toLowerCase()),
+  );
+  return match ? match.toUpperCase() : undefined;
+}
+
 /**
  * @param {{
  *   product:
@@ -17,7 +30,6 @@ import {ProductCartStepper} from '~/components/ProductCartStepper';
 export function ProductItem({product, loading = 'lazy'}) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
-  const description = product.description?.trim() || undefined;
   const variant = product.variants?.nodes?.[0];
   const isOnSale =
     variant?.compareAtPrice &&
@@ -25,17 +37,36 @@ export function ProductItem({product, loading = 'lazy'}) {
     Number(variant.compareAtPrice.amount) > Number(variant.price.amount);
   const isSoldOut = variant != null && !variant.availableForSale;
   const {open} = useAside();
+  const meta = getFlavorMeta(product.tags);
 
   return (
-    <div className="product-card-link relative h-full">
+    <div className="product-card-link group/card relative h-full">
       <ProductCard
         className="relative z-[1] h-full pointer-events-none"
         imageSrc={image?.url}
         imageAlt={image?.altText || product.title}
         imageLoading={loading}
+        fit="contain"
         title={product.title}
-        description={description}
+        meta={meta}
         price={<Money data={product.priceRange.minVariantPrice} />}
+        compareAtPrice={
+          isOnSale && variant?.compareAtPrice ? (
+            <Money data={variant.compareAtPrice} />
+          ) : undefined
+        }
+        badgeTopLeft={
+          isOnSale ? (
+            <Badge variant="sale" rotate="left">
+              Sale
+            </Badge>
+          ) : undefined
+        }
+        badgeTopRight={
+          isSoldOut ? (
+            <Badge variant="soldout">Sold out</Badge>
+          ) : undefined
+        }
         footer={
           variant?.id ? (
             <div className="relative z-10 w-full pointer-events-auto">
@@ -55,22 +86,6 @@ export function ProductItem({product, loading = 'lazy'}) {
         className="absolute inset-0 z-0"
         aria-label={product.title}
       />
-      {isOnSale ? (
-        <Badge
-          variant="success"
-          className="pointer-events-none absolute left-2 top-2 z-10"
-        >
-          Sale
-        </Badge>
-      ) : null}
-      {isSoldOut ? (
-        <Badge
-          variant="destructive"
-          className="pointer-events-none absolute right-2 top-2 z-10"
-        >
-          Sold out
-        </Badge>
-      ) : null}
     </div>
   );
 }

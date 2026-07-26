@@ -4,7 +4,7 @@ import {HomePage} from '@fsd/pages/home';
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Candy Area | Home'}];
 };
 
 /**
@@ -78,6 +78,7 @@ const CANDY_COLLECTION_QUERY = `#graphql
     title
     handle
     description
+    tags
     priceRange {
       minVariantPrice {
         amount
@@ -111,7 +112,7 @@ const CANDY_COLLECTION_QUERY = `#graphql
     collection(handle: "candy-v1") {
       id
       title
-      products(first: 20) {
+      products(first: 8) {
         nodes {
           ...RecommendedProduct
         }
