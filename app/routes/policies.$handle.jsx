@@ -1,10 +1,11 @@
 import {PolicyPage} from '@fsd/pages/policy';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.policy.title ?? ''}`}];
+  return [{title: `${STORE_DISPLAY_NAME} | ${data?.policy.title ?? ''}`}];
 };
 
 /**

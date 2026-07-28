@@ -1,11 +1,12 @@
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ArticlePage} from '@fsd/pages/article';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.article.title ?? ''} article`}];
+  return [{title: `${STORE_DISPLAY_NAME} | ${data?.article.title ?? ''} article`}];
 };
 
 /**

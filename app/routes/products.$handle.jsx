@@ -1,13 +1,14 @@
 import {getSelectedProductOptions} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductPage} from '@fsd/pages/product';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: `${STORE_DISPLAY_NAME} | ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -107,6 +108,7 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    tags
     encodedVariantExistence
     encodedVariantAvailability
     options {

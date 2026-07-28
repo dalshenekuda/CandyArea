@@ -1,12 +1,13 @@
 import {data} from 'react-router';
 import {CartForm} from '@shopify/hydrogen';
 import {CartPage} from '@fsd/pages/cart';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return [{title: `${STORE_DISPLAY_NAME} | Cart`}];
 };
 
 /**

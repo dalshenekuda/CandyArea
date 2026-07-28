@@ -1,12 +1,13 @@
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {BlogPage} from '@fsd/pages/blog';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.blog.title ?? ''} blog`}];
+  return [{title: `${STORE_DISPLAY_NAME} | ${data?.blog.title ?? ''} blog`}];
 };
 
 /**

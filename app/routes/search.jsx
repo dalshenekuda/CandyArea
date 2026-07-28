@@ -1,12 +1,13 @@
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {getEmptyPredictiveSearchResult} from '~/lib/search';
 import {SearchPage} from '@fsd/pages/search';
+import {STORE_DISPLAY_NAME} from '~/lib/store';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Search`}];
+  return [{title: `${STORE_DISPLAY_NAME} | Search`}];
 };
 
 /**

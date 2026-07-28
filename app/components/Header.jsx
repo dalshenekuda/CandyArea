@@ -4,7 +4,7 @@ import {Await, NavLink, useAsyncValue} from 'react-router';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {useTheme} from '~/hooks/useTheme';
-import {STORE_DISPLAY_NAME} from '~/lib/store';
+import {resolveMenuPath} from '~/lib/store';
 
 /**
  * @param {HeaderProps}
@@ -14,10 +14,16 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   return (
     <header className="header">
       <div className="site-container header-inner">
-        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-          <Text as="span" variant="display-lg" color="color-text">
-            {STORE_DISPLAY_NAME}
-          </Text>
+        <NavLink
+          prefetch="intent"
+          to="/"
+          className="header-logo"
+          style={activeLinkStyle}
+          aria-label="Candy Area"
+          end
+        >
+          <span className="header-logo-primary">Candy</span>
+          <span className="header-logo-secondary">Area</span>
         </NavLink>
         <HeaderMenu
           menu={menu}
@@ -66,12 +72,14 @@ export function HeaderMenu({
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
-        const url =
+        const url = resolveMenuPath(
           item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
-            : item.url;
+            : item.url,
+          item.title,
+        );
         return (
           <NavLink
             className="header-menu-item"
