@@ -10,6 +10,19 @@ import {
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
+import {getFlavorMeta} from '~/lib/flavors';
+
+/**
+ * @param {string | undefined} html
+ */
+function stripHtml(html) {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 export function ProductPage() {
   /** @type {LoaderReturnData} */
@@ -27,8 +40,13 @@ export function ProductPage() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, description, descriptionHtml} = product;
+  const {title, description, descriptionHtml, tags} = product;
   const summary = description?.trim();
+  const plainDescription = stripHtml(descriptionHtml);
+  const showSummary =
+    Boolean(summary) &&
+    summary.toLowerCase() !== plainDescription.toLowerCase();
+  const flavorMeta = getFlavorMeta(tags);
 
   return (
     <div className="product">
@@ -37,34 +55,39 @@ export function ProductPage() {
       </div>
       <div className="product-main">
         <div className="product-summary flex flex-col gap-sm">
-          <Text variant="heading-lg" weight="semibold">
+          <Text variant="display-lg" weight="semibold">
             {title}
           </Text>
-          {summary ? (
+          {flavorMeta ? (
+            <Text variant="subtitle-md" color="color-text-muted">
+              {flavorMeta}
+            </Text>
+          ) : null}
+          {showSummary ? (
             <Text
-              variant="heading-md"
+              variant="body-md"
               color="color-text-muted"
               className="line-clamp-3"
             >
               {summary}
             </Text>
           ) : null}
-          <ProductPrice
-            variant="card"
-            price={selectedVariant?.price}
-            compareAtPrice={selectedVariant?.compareAtPrice}
-          />
+          <div className="product-buy-row">
+            <ProductPrice
+              variant="pdp"
+              price={selectedVariant?.price}
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
+            <ProductForm
+              productOptions={productOptions}
+              selectedVariant={selectedVariant}
+            />
+          </div>
         </div>
-        <div className="product-form-section">
-          <ProductForm
-            productOptions={productOptions}
-            selectedVariant={selectedVariant}
-          />
-        </div>
-        {descriptionHtml ? (
+        {descriptionHtml && plainDescription ? (
           <div className="product-description">
             <Text
-              variant="heading-md"
+              variant="subtitle-md"
               color="color-text-muted"
               className="mb-sm"
             >

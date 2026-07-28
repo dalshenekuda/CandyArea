@@ -2,21 +2,9 @@ import {Badge, ProductCard} from '@dalshenekuda/candy-ui';
 import {Link} from 'react-router';
 import {Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
+import {getFlavorMeta} from '~/lib/flavors';
 import {useAside} from '~/components/Aside';
 import {ProductCartStepper} from '~/components/ProductCartStepper';
-
-const FLAVOR_TAGS = ['sour', 'milk', 'fruity', 'mint'];
-
-/**
- * @param {string[] | undefined} tags
- */
-function getFlavorMeta(tags) {
-  if (!tags?.length) return undefined;
-  const match = tags.find((tag) =>
-    FLAVOR_TAGS.includes(tag.toLowerCase()),
-  );
-  return match ? match.toUpperCase() : undefined;
-}
 
 /**
  * @param {{
@@ -25,9 +13,10 @@ function getFlavorMeta(tags) {
  *     | ProductItemFragment
  *     | RecommendedProductFragment;
  *   loading?: 'eager' | 'lazy';
+ *   showMeta?: boolean;
  * }}
  */
-export function ProductItem({product, loading = 'lazy'}) {
+export function ProductItem({product, loading = 'lazy', showMeta = true}) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
   const variant = product.variants?.nodes?.[0];
@@ -37,7 +26,7 @@ export function ProductItem({product, loading = 'lazy'}) {
     Number(variant.compareAtPrice.amount) > Number(variant.price.amount);
   const isSoldOut = variant != null && !variant.availableForSale;
   const {open} = useAside();
-  const meta = getFlavorMeta(product.tags);
+  const meta = showMeta ? getFlavorMeta(product.tags) : undefined;
 
   return (
     <div className="product-card-link group/card relative h-full">
@@ -47,6 +36,7 @@ export function ProductItem({product, loading = 'lazy'}) {
         imageAlt={image?.altText || product.title}
         imageLoading={loading}
         fit="contain"
+        tone="blueras"
         title={product.title}
         meta={meta}
         price={<Money data={product.priceRange.minVariantPrice} />}
@@ -55,16 +45,13 @@ export function ProductItem({product, loading = 'lazy'}) {
             <Money data={variant.compareAtPrice} />
           ) : undefined
         }
-        badgeTopLeft={
-          isOnSale ? (
-            <Badge variant="sale" rotate="left">
-              Sale
-            </Badge>
-          ) : undefined
-        }
         badgeTopRight={
           isSoldOut ? (
-            <Badge variant="soldout">Sold out</Badge>
+            <Badge variant="print">Sold out</Badge>
+          ) : isOnSale ? (
+            <Badge variant="ink" rotate="right">
+              Sale
+            </Badge>
           ) : undefined
         }
         footer={
@@ -72,6 +59,7 @@ export function ProductItem({product, loading = 'lazy'}) {
             <div className="relative z-10 w-full pointer-events-auto">
               <ProductCartStepper
                 className="w-full"
+                size="default"
                 variantId={variant.id}
                 availableForSale={variant.availableForSale}
                 onAdded={() => open('cart')}

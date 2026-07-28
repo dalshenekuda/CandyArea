@@ -108,7 +108,9 @@ export function ProductForm({productOptions, selectedVariant}) {
         selectedVariant={selectedVariant}
         availableForSale={isAvailable}
         onAdded={() => open('cart')}
-        size="lg"
+        size="default"
+        align="start"
+        className="w-full max-w-[14rem]"
       />
     </div>
   );
