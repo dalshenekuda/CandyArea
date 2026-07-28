@@ -1,14 +1,37 @@
 import {redirect} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {isCatalogCollection, STORE_DISPLAY_NAME} from '~/lib/store';
 import {CollectionPage} from '@fsd/pages/collection';
 
 /**
  * @type {Route.MetaFunction}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  if (isCatalogCollection(data?.collection?.handle)) {
+    return [{title: `${STORE_DISPLAY_NAME} | Catalog`}];
+  }
+  return [{title: `${STORE_DISPLAY_NAME} | ${data?.collection.title ?? ''}`}];
 };
+
+/**
+ * Map URL `?sort=` to Storefront ProductCollectionSortKeys.
+ * @param {string | null} sortParam
+ * @returns {{sortKey: string; reverse: boolean}}
+ */
+export function parseCollectionSort(sortParam) {
+  switch (sortParam) {
+    case 'PRICE_ASC':
+      return {sortKey: 'PRICE', reverse: false};
+    case 'PRICE_DESC':
+      return {sortKey: 'PRICE', reverse: true};
+    case 'TITLE':
+      return {sortKey: 'TITLE', reverse: false};
+    case 'FEATURED':
+    default:
+      return {sortKey: 'COLLECTION_DEFAULT', reverse: false};
+  }
+}
 
 /**
  * @param {Route.LoaderArgs} args
@@ -34,9 +57,12 @@ async function loadCriticalData({context, params, request}) {
     throw redirect('/collections');
   }
 
+  const url = new URL(request.url);
+  const {sortKey, reverse} = parseCollectionSort(url.searchParams.get('sort'));
+
   const [{collection}] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: {handle, ...paginationVariables},
+      variables: {handle, sortKey, reverse, ...paginationVariables},
     }),
   ]);
 
@@ -72,6 +98,7 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     handle
     title
     description
+    tags
     featuredImage {
       id
       altText
@@ -112,6 +139,8 @@ const COLLECTION_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
@@ -122,7 +151,9 @@ const COLLECTION_QUERY = `#graphql
         first: $first,
         last: $last,
         before: $startCursor,
-        after: $endCursor
+        after: $endCursor,
+        sortKey: $sortKey,
+        reverse: $reverse
       ) {
         nodes {
           ...ProductItem
