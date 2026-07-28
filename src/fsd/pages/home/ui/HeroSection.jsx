@@ -1,5 +1,6 @@
 import {Button, Text} from '@dalshenekuda/candy-ui';
 import {Link} from 'react-router';
+import {CATALOG_COLLECTION_PATH} from '~/lib/store';
 
 export function HeroSection() {
   return (
@@ -20,9 +21,9 @@ export function HeroSection() {
           </Text>
           <div className="hero-actions">
             <Button asChild size="xl">
-              <Link to="/collections/all">Shop all</Link>
+              <Link to={CATALOG_COLLECTION_PATH}>Shop all</Link>
             </Button>
-            <Link to="/collections/candy-v1">
+            <Link to={CATALOG_COLLECTION_PATH}>
               <Text variant="meta-md" color="tone-ink">
                 Best sellers →
               </Text>

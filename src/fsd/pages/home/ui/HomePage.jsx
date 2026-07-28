@@ -1,6 +1,6 @@
 import {useLoaderData} from 'react-router';
 import {MockShopNotice} from '~/components/MockShopNotice';
-import {CounterGrid} from './CounterGrid';
+import {FeaturedProducts} from './FeaturedProducts';
 import {HeroSection} from './HeroSection';
 
 export function HomePage() {
@@ -10,7 +10,7 @@ export function HomePage() {
     <div className="home home-bleed">
       {data.isShopLinked ? null : <MockShopNotice />}
       <HeroSection />
-      <CounterGrid collection={data.candyCollection} />
+      <FeaturedProducts collection={data.candyCollection} />
     </div>
   );
 }

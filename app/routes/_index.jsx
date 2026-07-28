@@ -112,7 +112,7 @@ const CANDY_COLLECTION_QUERY = `#graphql
     collection(handle: "candy-v1") {
       id
       title
-      products(first: 8) {
+      products(first: 3) {
         nodes {
           ...RecommendedProduct
         }
