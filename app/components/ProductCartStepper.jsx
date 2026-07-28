@@ -3,6 +3,32 @@ import {CartForm, useOptimisticCart} from '@shopify/hydrogen';
 import {Suspense, useEffect, useRef} from 'react';
 import {Await, useRouteLoaderData} from 'react-router';
 
+/** @type {Record<'sm' | 'default' | 'lg', { height: string; icon: string; maxWidth: string }>} */
+const SIZE_CLASSES = {
+  sm: {
+    height: 'h-9',
+    icon: 'h-9 w-9 min-w-9',
+    maxWidth: 'max-w-[12rem]',
+  },
+  default: {
+    height: 'h-11',
+    icon: 'h-11 w-11 min-w-11',
+    maxWidth: 'max-w-[14rem]',
+  },
+  lg: {
+    height: 'h-11',
+    icon: 'h-11 w-11 min-w-11',
+    maxWidth: 'max-w-[16rem]',
+  },
+};
+
+/**
+ * @param {'sm' | 'default' | 'lg'} size
+ */
+function getSizeClasses(size) {
+  return SIZE_CLASSES[size] ?? SIZE_CLASSES.default;
+}
+
 /**
  * @param {{
  *   variantId?: string;
@@ -12,6 +38,7 @@ import {Await, useRouteLoaderData} from 'react-router';
  *   size?: 'sm' | 'default' | 'lg';
  *   variant?: 'default' | 'compact';
  *   className?: string;
+ *   align?: 'center' | 'start';
  * }}
  */
 export function ProductCartStepper({
@@ -19,9 +46,10 @@ export function ProductCartStepper({
   selectedVariant,
   availableForSale = true,
   onAdded,
-  size = 'sm',
+  size = 'default',
   variant = 'default',
   className,
+  align = 'center',
 }) {
   const merchandiseId = variantId ?? selectedVariant?.id;
   const rootData = useRouteLoaderData('root');
@@ -61,6 +89,7 @@ export function ProductCartStepper({
             size={size}
             variant={variant}
             className={className}
+            align={align}
           />
         )}
       </Await>
@@ -80,6 +109,7 @@ function ProductCartStepperInner({
   size,
   variant,
   className,
+  align,
 }) {
   const optimisticCart = useOptimisticCart(cart);
   const line = (optimisticCart?.lines?.nodes ?? []).find(
@@ -90,6 +120,7 @@ function ProductCartStepperInner({
   const isOptimistic = line?.isOptimistic;
   const disabled = !availableForSale || !!isOptimistic;
   const prevQuantity = useRef(quantity);
+  const sizeClasses = getSizeClasses(size);
 
   useEffect(() => {
     if (prevQuantity.current === 0 && quantity > 0) {
@@ -102,15 +133,17 @@ function ProductCartStepperInner({
     event.stopPropagation();
   };
 
+  const justify = align === 'start' ? 'justify-start' : 'justify-center';
+
   return (
     <div
-      className={['w-full', className].filter(Boolean).join(' ')}
+      className={['flex w-full', justify, className].filter(Boolean).join(' ')}
       onClick={stopPropagation}
       onKeyDown={stopPropagation}
       role="presentation"
     >
       <AddToCartStepper
-        className="w-full"
+        className={`w-full ${sizeClasses.maxWidth} [&>form]:contents`}
         quantity={quantity}
         disabled={disabled}
         size={size}
@@ -211,15 +244,20 @@ function CartLinesAddForm({
  *   variant?: 'default' | 'compact';
  * }}
  */
-function CartLinesAddButton({fetcher, disabled, size, variant = 'default'}) {
+function CartLinesAddButton({fetcher, disabled, size = 'default', variant = 'default'}) {
   const isCompact = variant === 'compact';
+  const {height, maxWidth} = getSizeClasses(size);
 
   return (
     <Button
       type="submit"
-      variant={isCompact ? 'outline' : 'default'}
-      size={isCompact ? 'sm' : size}
-      className={isCompact ? 'h-8 w-full px-sm text-xs' : 'w-full'}
+      variant={isCompact ? 'outline' : 'cart'}
+      size={isCompact ? 'sm' : 'pill'}
+      className={
+        isCompact
+          ? 'h-8 w-full px-sm text-xs'
+          : `${height} w-full ${maxWidth} rounded-full`
+      }
       disabled={disabled || fetcher.state !== 'idle'}
     >
       {isCompact ? 'Add' : 'Add to cart'}
@@ -227,22 +265,36 @@ function CartLinesAddButton({fetcher, disabled, size, variant = 'default'}) {
   );
 }
 
+const STEPPER_ICON_COMPACT_CLASS =
+  'flex h-full w-8 min-w-8 shrink-0 items-center justify-center self-stretch rounded-none border-0 p-0 text-sm font-semibold leading-none text-text shadow-none hover:bg-surface-sunken hover:text-text active:translate-y-0 active:shadow-none [&]:leading-none';
+
+const STEPPER_GLYPH = 'leading-none';
+
+function stepperIconClass(size, variant) {
+  if (variant === 'compact') return STEPPER_ICON_COMPACT_CLASS;
+  const {icon} = getSizeClasses(size);
+  const width = icon.replace(/\bh-\S+/g, '').trim();
+  return `flex h-full ${width} shrink-0 items-center justify-center self-stretch rounded-none border-0 p-0 text-base font-semibold leading-none text-text shadow-none hover:bg-surface-sunken hover:text-text active:translate-y-0 active:shadow-none [&]:leading-none`;
+}
+
 /**
  * @param {{
  *   lines: Array<{id: string; quantity: number}>;
  *   disabled?: boolean;
  *   variant?: 'default' | 'compact';
+ *   size?: 'sm' | 'default' | 'lg';
  *   ariaLabel: string;
  * }}
  */
-function CartLinesUpdateForm({lines, disabled, variant = 'default', ariaLabel, size = 'sm'}) {
+function CartLinesUpdateForm({
+  lines,
+  disabled,
+  variant = 'default',
+  size = 'default',
+  ariaLabel,
+}) {
   const lineIds = lines.map((line) => line.id);
-  const iconClass =
-    variant === 'compact'
-      ? 'h-8 w-8 shrink-0'
-      : size === 'lg'
-        ? 'h-11 w-11 shrink-0'
-        : 'h-9 w-9 shrink-0';
+  const iconClass = stepperIconClass(size, variant);
 
   return (
     <CartForm
@@ -254,13 +306,15 @@ function CartLinesUpdateForm({lines, disabled, variant = 'default', ariaLabel, s
       {(fetcher) => (
         <Button
           type="submit"
-          variant="outline"
+          variant="ghost"
           size="icon"
           className={iconClass}
           disabled={disabled || fetcher.state !== 'idle'}
           aria-label={ariaLabel}
         >
-          <span aria-hidden>{ariaLabel.includes('Increase') ? '+' : '−'}</span>
+          <span aria-hidden className={STEPPER_GLYPH}>
+            {ariaLabel.includes('Increase') ? '+' : '−'}
+          </span>
         </Button>
       )}
     </CartForm>
@@ -272,16 +326,18 @@ function CartLinesUpdateForm({lines, disabled, variant = 'default', ariaLabel, s
  *   lineIds: string[];
  *   disabled?: boolean;
  *   variant?: 'default' | 'compact';
+ *   size?: 'sm' | 'default' | 'lg';
  *   ariaLabel: string;
  * }}
  */
-function CartLinesRemoveForm({lineIds, disabled, variant = 'default', ariaLabel, size = 'sm'}) {
-  const iconClass =
-    variant === 'compact'
-      ? 'h-8 w-8 shrink-0'
-      : size === 'lg'
-        ? 'h-11 w-11 shrink-0'
-        : 'h-9 w-9 shrink-0';
+function CartLinesRemoveForm({
+  lineIds,
+  disabled,
+  variant = 'default',
+  size = 'default',
+  ariaLabel,
+}) {
+  const iconClass = stepperIconClass(size, variant);
 
   return (
     <CartForm
@@ -293,13 +349,13 @@ function CartLinesRemoveForm({lineIds, disabled, variant = 'default', ariaLabel,
       {(fetcher) => (
         <Button
           type="submit"
-          variant="outline"
+          variant="ghost"
           size="icon"
           className={iconClass}
           disabled={disabled || fetcher.state !== 'idle'}
           aria-label={ariaLabel}
         >
-          <span aria-hidden>−</span>
+          <span aria-hidden className={STEPPER_GLYPH}>−</span>
         </Button>
       )}
     </CartForm>
@@ -323,4 +379,5 @@ function getCartUpdateKey(lineIds) {
  * @property {'sm' | 'default' | 'lg'} [size]
  * @property {'default' | 'compact'} [variant]
  * @property {string} [className]
+ * @property {'center' | 'start'} [align]
  */

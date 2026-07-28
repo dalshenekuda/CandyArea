@@ -1,4 +1,4 @@
-import {Text} from '@dalshenekuda/candy-ui';
+import {Button, Text} from '@dalshenekuda/candy-ui';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useEffect, useRef} from 'react';
 import {useFetcher} from 'react-router';
@@ -43,13 +43,12 @@ function CartCheckoutActions({checkoutUrl}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <Text as="span" variant="body-md">
+    <div className="mt-sm">
+      <Button asChild variant="cart" size="pill" className="w-full">
+        <a href={checkoutUrl} target="_self">
           Continue to Checkout &rarr;
-        </Text>
-      </a>
-      <br />
+        </a>
+      </Button>
     </div>
   );
 }
@@ -66,32 +65,33 @@ function CartDiscounts({discountCodes}) {
       ?.map(({code}) => code) || [];
 
   return (
-    <div>
-      {/* Have existing discount, display it with a remove option */}
-      <dl hidden={!codes.length}>
-        <div>
-          <Text as="dt" variant="body-sm">
+    <div className="cart-promo-section">
+      {codes.length > 0 ? (
+        <dl>
+          <Text as="dt" variant="body-sm" className="cart-promo-label">
             Discount(s)
           </Text>
           <UpdateDiscountForm>
-            <div className="cart-discount">
-              <Text as="code" variant="body-sm">
-                {codes?.join(', ')}
+            <div className="cart-promo-applied">
+              <Text as="code" variant="body-sm" className="cart-promo-tag">
+                {codes.join(', ')}
               </Text>
-              &nbsp;
-              <button type="submit" aria-label="Remove discount">
-                <Text as="span" variant="body-sm">
-                  Remove
-                </Text>
-              </button>
+              <Button
+                type="submit"
+                variant="ghost"
+                size="sm"
+                className="cart-promo-remove"
+                aria-label="Remove discount"
+              >
+                Remove
+              </Button>
             </div>
           </UpdateDiscountForm>
-        </div>
-      </dl>
+        </dl>
+      ) : null}
 
-      {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
+        <div className="cart-promo-chip">
           <Text
             as="label"
             htmlFor="discount-code-input"
@@ -102,16 +102,20 @@ function CartDiscounts({discountCodes}) {
           </Text>
           <input
             id="discount-code-input"
+            className="cart-promo-input"
             type="text"
             name="discountCode"
             placeholder="Discount code"
           />
-          &nbsp;
-          <button type="submit" aria-label="Apply discount code">
-            <Text as="span" variant="body-sm">
-              Apply
-            </Text>
-          </button>
+          <Button
+            type="submit"
+            variant="outline"
+            size="sm"
+            className="cart-promo-apply"
+            aria-label="Apply discount code"
+          >
+            Apply
+          </Button>
         </div>
       </UpdateDiscountForm>
     </div>
@@ -154,48 +158,54 @@ function CartGiftCard({giftCardCodes}) {
   }, [giftCardAddFetcher.data]);
 
   return (
-    <div>
-      {giftCardCodes && giftCardCodes.length > 0 && (
+    <div className="cart-promo-section">
+      {giftCardCodes && giftCardCodes.length > 0 ? (
         <dl>
-          <Text as="dt" variant="body-sm">
+          <Text as="dt" variant="body-sm" className="cart-promo-label">
             Applied Gift Card(s)
           </Text>
           {giftCardCodes.map((giftCard) => (
             <RemoveGiftCardForm key={giftCard.id} giftCardId={giftCard.id}>
-              <div className="cart-discount">
-                <Text as="code" variant="body-sm">
+              <div className="cart-promo-applied">
+                <Text as="code" variant="body-sm" className="cart-promo-tag">
                   ***{giftCard.lastCharacters}
                 </Text>
-                &nbsp;
                 <Text as="span" variant="body-sm">
                   <Money data={giftCard.amountUsed} />
                 </Text>
-                &nbsp;
-                <button type="submit">
-                  <Text as="span" variant="body-sm">
-                    Remove
-                  </Text>
-                </button>
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  size="sm"
+                  className="cart-promo-remove"
+                >
+                  Remove
+                </Button>
               </div>
             </RemoveGiftCardForm>
           ))}
         </dl>
-      )}
+      ) : null}
 
       <AddGiftCardForm fetcherKey="gift-card-add">
-        <div>
+        <div className="cart-promo-chip">
           <input
+            className="cart-promo-input"
             type="text"
             name="giftCardCode"
             placeholder="Gift card code"
             ref={giftCardCodeInput}
+            aria-label="Gift card code"
           />
-          &nbsp;
-          <button type="submit" disabled={giftCardAddFetcher.state !== 'idle'}>
-            <Text as="span" variant="body-sm">
-              Apply
-            </Text>
-          </button>
+          <Button
+            type="submit"
+            variant="outline"
+            size="sm"
+            className="cart-promo-apply"
+            disabled={giftCardAddFetcher.state !== 'idle'}
+          >
+            Apply
+          </Button>
         </div>
       </AddGiftCardForm>
     </div>

@@ -103,7 +103,7 @@ function CartLineQuantity({line}) {
   return (
     <div className="cart-line-quantity">
       <AddToCartStepper
-        variant="compact"
+        variant="compact-pill"
         quantity={quantity}
         disabled={disabled}
         decreaseButton={
@@ -178,13 +178,15 @@ function CartLineUpdateForm({lines, disabled, ariaLabel}) {
       {(fetcher) => (
         <Button
           type="submit"
-          variant="outline"
+          variant="ghost"
           size="icon"
-          className="h-8 w-8 shrink-0"
+          className="flex h-full w-8 min-w-8 shrink-0 items-center justify-center self-stretch rounded-none border-0 p-0 text-sm font-semibold leading-none text-text shadow-none hover:bg-surface-sunken hover:text-text active:translate-y-0 active:shadow-none [&]:leading-none"
           disabled={disabled || fetcher.state !== 'idle'}
           aria-label={ariaLabel}
         >
-          <span aria-hidden>{ariaLabel.includes('Increase') ? '+' : '−'}</span>
+          <span aria-hidden className="leading-none">
+            {ariaLabel.includes('Increase') ? '+' : '−'}
+          </span>
         </Button>
       )}
     </CartForm>
