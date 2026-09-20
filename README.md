@@ -1,45 +1,154 @@
-# Hydrogen template: Skeleton
+# CandyArea
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **minimal setup** of components, queries and tooling to get started with Hydrogen.
+**Hydrogen storefront demo** powered by the [CandyUI](https://github.com/dalshenekuda/CandyUI) design system — a portfolio case study for headless Shopify commerce, not a production store.
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+| Link | URL |
+| --- | --- |
+| **Live demo** | `[TBD]` — deploy to Shopify Oxygen (see [Deploy](#deploy-to-shopify-oxygen)) |
+| **CandyUI (GitHub)** | https://github.com/dalshenekuda/CandyUI |
+| **CandyUI (local)** | `file:../CandyUI` — sibling repo for pre-push dev (switch to npm before deploy) |
+| **Storybook** | `[TBD]` — public Storybook URL will be added when CandyUI Chromatic deploy is live |
+| **This repo** | https://github.com/dalshenekuda/CandyArea |
 
-## What's included
+CandyArea **consumes** CandyUI from the sibling [`../CandyUI`](../CandyUI) checkout while you iterate locally; before push/deploy, point `package.json` back at `@dalshenekuda/candy-ui` on npm.
 
-- Remix
-- Hydrogen
-- Oxygen
-- Vite
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Minimal setup of components and routes
+---
 
-## Getting started
+## Stack
 
-**Requirements:**
+- [Shopify Hydrogen](https://shopify.dev/docs/storefronts/headless/hydrogen) `2026.1.1`
+- [React Router](https://reactrouter.com/) `7.12` (Hydrogen skeleton, not Remix)
+- Vite 6, Tailwind CSS + `@dalshenekuda/candy-ui/tailwind.preset`
+- Feature-Sliced Design pages under [`src/fsd/pages`](src/fsd/pages)
+- Oxygen worker entry: [`server.js`](server.js)
 
-- Node.js version 18.0.0 or higher
+## Architecture
 
-```bash
-npm create @shopify/hydrogen@latest
+```mermaid
+flowchart LR
+  oxygen["Oxygen / server.js"]
+  routes["app/routes"]
+  fsd["src/fsd/pages"]
+  kit["@dalshenekuda/candy-ui"]
+  oxygen --> routes
+  routes --> fsd
+  fsd --> kit
 ```
 
-## Building for production
+- **Routes** — file-based routing via [`app/routes.js`](app/routes.js) and [`app/routes/`](app/routes/).
+- **UI** — route modules delegate to FSD page components; shared chrome in [`app/components`](app/components).
+- **Design system** — global CandyUI styles in [`app/root.jsx`](app/root.jsx); Tailwind preset in [`tailwind.config.js`](tailwind.config.js).
 
-```bash
-npm run build
-```
+## Features (implemented routes)
+
+| Area | Routes |
+| --- | --- |
+| Home | `/` |
+| Collections | `/collections`, `/collections/all`, `/collections/:handle` |
+| Product (PDP) | `/products/:handle` |
+| Cart | `/cart`, `/cart/:lines` |
+| Search | `/search` |
+| Content | `/blogs`, `/blogs/:blog`, `/pages/:handle`, `/policies` |
+| Account | `/account`, profile, addresses, orders (requires Customer Account setup) |
+| SEO / utilities | sitemap, robots, discount codes, Storefront API proxy |
+
+---
 
 ## Local development
 
+**Requirements:** Node.js `^22 || ^24` (see [`package.json`](package.json) `engines`).
+
 ```bash
+# Sibling layout: shopify/CandyUI + shopify/CandyArea
+cd ../CandyUI && npm install && npm run build
+cd ../CandyArea
+npm install
+cp .env.example .env   # set SESSION_SECRET at minimum
 npm run dev
 ```
 
-## Setup for using Customer Account API (`/account` section)
+Storybook (CandyUI only): `cd ../CandyUI && npm run storybook` → http://localhost:6006
 
-Follow step 1 and 2 of <https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/hydrogen#step-1-set-up-a-public-domain-for-local-development>
+Other scripts:
+
+```bash
+npm run build    # shopify hydrogen build --codegen
+npm run preview  # production preview locally
+npm run lint
+```
+
+**Local dev:** `package.json` uses `file:../CandyUI` — keep CandyUI next to this repo and run `npm run build` in CandyUI after kit changes.
+
+### Mock shop vs linked store
+
+- **Mock / demo:** Hydrogen serves [Mock.shop](https://mock.shop/) catalog when no store domain is configured. The home page shows a [`MockShopNotice`](app/components/MockShopNotice.jsx) banner explaining the demo catalog.
+- **Linked store:** Connect your Shopify development store (credentials stay local — never commit `.env` or `shopify.app.toml`):
+
+```bash
+npx shopify hydrogen link
+npx shopify hydrogen env pull
+```
+
+When `PUBLIC_STORE_DOMAIN` is set, the mock notice is hidden and live storefront data is used.
+
+### Environment variables
+
+Copy [`.env.example`](.env.example). Names only (no secrets in git):
+
+| Variable | Mock demo | Linked store |
+| --- | --- | --- |
+| `SESSION_SECRET` | Required | Required |
+| `PUBLIC_STORE_DOMAIN` | Optional | Required |
+| `PUBLIC_STOREFRONT_API_TOKEN` | Optional | Required |
+| `PUBLIC_STOREFRONT_ID` | Optional | Required |
+| `PUBLIC_CHECKOUT_DOMAIN` | Optional | Required |
+| `PUBLIC_CUSTOMER_ACCOUNT_API_*` | Optional | Required for `/account` |
+
+---
+
+## Deploy to Shopify Oxygen
+
+Public URL for LinkedIn / portfolio: **`[TBD]`** — replace after deploy.
+
+1. Install [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) and log in.
+2. Link the project: `npx shopify hydrogen link`
+3. Sync env vars to Oxygen: `npx shopify hydrogen env pull` (and configure secrets in the Shopify admin for production).
+4. Deploy: `npx shopify hydrogen deploy` ([Hydrogen deployments](https://shopify.dev/docs/storefronts/headless/hydrogen/deployments)).
+5. Paste the Oxygen preview or production URL above in this README.
+
+The demo can stay on **mock catalog + notice**; no private store credentials need to be in the repo. Confirm `@dalshenekuda/candy-ui/style.css` loads on production (no 404 on CSS assets).
+
+---
+
+## GitHub Actions (CI)
+
+Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — `npm ci`, `npm run lint`, `npm run build`.
+
+For `build` on GitHub, set **Repository secrets** (Settings → Secrets and variables → Actions):
+
+| Secret | Purpose |
+| --- | --- |
+| `SESSION_SECRET` | Dummy or real session secret for Hydrogen build/runtime checks |
+
+Optional (only if you want CI against a real storefront):
+
+| Secret | Purpose |
+| --- | --- |
+| `PUBLIC_STORE_DOMAIN` | Linked store domain |
+| `PUBLIC_STOREFRONT_API_TOKEN` | Storefront API token |
+| `PUBLIC_STOREFRONT_ID` | Storefront ID |
+| `PUBLIC_CHECKOUT_DOMAIN` | Checkout domain |
+
+For Oxygen deploy from CI, use Shopify’s [deployment token](https://shopify.dev/docs/storefronts/headless/hydrogen/deployments/custom-ci-cd) as `SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN` (not stored in this repo).
+
+---
+
+## Screenshots (optional)
+
+Add portfolio captures under `docs/images/` (homepage, collection, cart) when available — paths can be linked from this README without committing large binaries if you prefer external hosting.
+
+---
+
+## License / intent
+
+Private npm package scope `@dalshenekuda/*`; this repository is a **portfolio demo** (`private: true`), based on the official Hydrogen skeleton.
