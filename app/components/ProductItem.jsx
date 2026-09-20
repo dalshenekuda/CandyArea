@@ -47,11 +47,9 @@ export function ProductItem({product, loading = 'lazy', showMeta = true}) {
         }
         badgeTopRight={
           isSoldOut ? (
-            <Badge variant="print">Sold out</Badge>
+            <Badge variant="secondary">Sold out</Badge>
           ) : isOnSale ? (
-            <Badge variant="ink" rotate="right">
-              Sale
-            </Badge>
+            <Badge variant="outline">Sale</Badge>
           ) : undefined
         }
         footer={

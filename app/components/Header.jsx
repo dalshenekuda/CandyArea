@@ -10,7 +10,7 @@ import {resolveMenuPath} from '~/lib/store';
  * @param {HeaderProps}
  */
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
-  const {shop, menu} = header;
+  const {menu} = header;
   return (
     <header className="header">
       <div className="site-container header-inner">

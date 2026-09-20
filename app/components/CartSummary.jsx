@@ -44,7 +44,7 @@ function CartCheckoutActions({checkoutUrl}) {
 
   return (
     <div className="mt-sm">
-      <Button asChild variant="cart" size="pill" className="w-full">
+      <Button asChild variant="default" className="w-full rounded-full">
         <a href={checkoutUrl} target="_self">
           Continue to Checkout &rarr;
         </a>

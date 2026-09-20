@@ -10,7 +10,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
     <Suspense>
       <Await resolve={footerPromise}>
         {(footer) => (
-          <footer className="footer">
+          <footer className="footer" data-tone="blueras">
             <div className="site-container">
               {footer?.menu && header.shop.primaryDomain?.url && (
                 <FooterMenu
@@ -122,7 +122,7 @@ const FALLBACK_FOOTER_MENU = {
 function activeLinkStyle({isActive, isPending}) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'var(--color-text-on-brand)',
+    opacity: isPending ? 0.6 : undefined,
   };
 }
 

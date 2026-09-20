@@ -251,8 +251,8 @@ function CartLinesAddButton({fetcher, disabled, size = 'default', variant = 'def
   return (
     <Button
       type="submit"
-      variant={isCompact ? 'outline' : 'cart'}
-      size={isCompact ? 'sm' : 'pill'}
+      variant={isCompact ? 'outline' : 'default'}
+      size={isCompact ? 'sm' : 'default'}
       className={
         isCompact
           ? 'h-8 w-full px-sm text-xs'

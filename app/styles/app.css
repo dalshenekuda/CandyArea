@@ -159,8 +159,6 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 .footer {
-  background: var(--color-brand-dark);
-  color: var(--color-text-on-brand);
   margin-top: auto;
 }
 
@@ -173,12 +171,13 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .footer-menu a {
-  color: var(--color-text-on-brand);
+  color: var(--tone-ink);
   min-width: fit-content;
+  text-decoration: none;
 }
 
 .footer-menu a:hover {
-  color: var(--color-accent-warm);
+  opacity: 0.85;
 }
 
 /*
