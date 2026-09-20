@@ -158,6 +158,7 @@ export function Layout({children}) {
         <meta name="theme-color" content="#0E0D0C" media="(prefers-color-scheme: dark)" />
         <script
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{__html: themeInitScript}}
         />
         <link rel="stylesheet" href={resetStyles}></link>
