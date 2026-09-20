@@ -21,17 +21,18 @@ export default defineConfig({
     // without inlining assets as base64:
     assetsInlineLimit: 0,
   },
+  optimizeDeps: {
+    exclude: ['@dalshenekuda/candy-ui'],
+  },
   ssr: {
+    // Bundled by Oxygen (noExternal: true). Do not externalize —
+    // workerd cannot resolve file: linked packages (No such module ui-kit.js).
+    // Keep excluded from optimizeDeps to avoid Dynamic require of react.
     optimizeDeps: {
+      exclude: ['@dalshenekuda/candy-ui'],
       /**
        * Include dependencies here if they throw CJS<>ESM errors.
-       * For example, for the following error:
-       *
-       * > ReferenceError: module is not defined
-       * >   at /Users/.../node_modules/example-dep/index.js:1:1
-       *
-       * Include 'example-dep' in the array below.
-       * @see https://vitejs.dev/config/dep-optimization-options
+       * Do not include @dalshenekuda/candy-ui.
        */
       include: ['set-cookie-parser', 'cookie', 'react-router'],
     },
