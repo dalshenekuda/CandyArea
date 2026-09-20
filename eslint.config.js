@@ -24,6 +24,8 @@ const compat = new FlatCompat({
 export default [
   {
     ignores: [
+      '**/.tools/**',
+      'env.d.ts',
       '**/node_modules/',
       '**/build/',
       '**/dist/',
