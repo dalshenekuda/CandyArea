@@ -13,7 +13,7 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
-    "@dalshenekuda/candy-ui": "^2.1.0",
+    "@dalshenekuda/candy-ui": "^2.1.1",
     "@shopify/hydrogen": "*2026.1.1",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
