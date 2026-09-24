@@ -20,5 +20,11 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Workaround npm optional deps bug (https://github.com/npm/cli/issues/4828):
+      # ensure Rollup's Linux binary is present so the Vite build can run.
+      - name: Ensure Rollup native binary
+        run: npm install @rollup/rollup-linux-x64-gnu --no-save
+
       - run: npm run lint
       - run: npm run build
