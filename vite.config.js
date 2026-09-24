@@ -39,5 +39,14 @@ export default defineConfig({
   },
   server: {
     allowedHosts: ['.tryhydrogen.dev'],
+    fs: {
+      // CandyUI's build/ ships fonts as real files (not base64), referenced
+      // via url() from style.css. When CandyUI is linked locally as a
+      // sibling repo (file:../CandyUI, see README), that CSS resolves to a
+      // path outside this project root, which Vite's dev server blocks by
+      // default. Not needed once the app depends on the npm-published
+      // package (those files live inside this project's own node_modules).
+      allow: ['..'],
+    },
   },
 });
