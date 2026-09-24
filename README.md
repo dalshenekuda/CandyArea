@@ -6,11 +6,11 @@
 | --- | --- |
 | **Live demo** | `[TBD]` — deploy to Shopify Oxygen (see [Deploy](#deploy-to-shopify-oxygen)) |
 | **CandyUI (GitHub)** | https://github.com/dalshenekuda/CandyUI |
-| **CandyUI (local)** | `file:../CandyUI` — sibling repo for pre-push dev (switch to npm before deploy) |
-| **Storybook** | `[TBD]` — public Storybook URL will be added when CandyUI Chromatic deploy is live |
+| **CandyUI (npm)** | [`@dalshenekuda/candy-ui`](https://www.npmjs.com/package/@dalshenekuda/candy-ui) |
+| **Storybook** | [main--6ab56ef1aed13efbc107d427.chromatic.com](https://main--6ab56ef1aed13efbc107d427.chromatic.com/) |
 | **This repo** | https://github.com/dalshenekuda/CandyArea |
 
-CandyArea **consumes** CandyUI from the sibling [`../CandyUI`](../CandyUI) checkout while you iterate locally; before push/deploy, point `package.json` back at `@dalshenekuda/candy-ui` on npm.
+CandyArea **consumes** CandyUI from npm. To iterate on unreleased CandyUI changes locally without committing a `file:` dependency, build CandyUI and `npm link` it into this project (see [CandyUI's README](https://github.com/dalshenekuda/CandyUI#local-install-in-another-project)); switch back to the npm range before pushing.
 
 ---
 
@@ -59,15 +59,10 @@ flowchart LR
 **Requirements:** Node.js `^22 || ^24` (see [`package.json`](package.json) `engines`).
 
 ```bash
-# Sibling layout: shopify/CandyUI + shopify/CandyArea
-cd ../CandyUI && npm install && npm run build
-cd ../CandyArea
 npm install
 cp .env.example .env   # set SESSION_SECRET at minimum
 npm run dev
 ```
-
-Storybook (CandyUI only): `cd ../CandyUI && npm run storybook` → http://localhost:6006
 
 Other scripts:
 
@@ -77,7 +72,7 @@ npm run preview  # production preview locally
 npm run lint
 ```
 
-**Local dev:** `package.json` uses `file:../CandyUI` — keep CandyUI next to this repo and run `npm run build` in CandyUI after kit changes.
+**Developing against unreleased CandyUI changes:** this repo depends on `@dalshenekuda/candy-ui` from npm. To try changes from a local CandyUI checkout before they're published, run `npm run build && npm link` in `../CandyUI`, then `npm link @dalshenekuda/candy-ui` here — `npm install` (or a fresh clone) reverts to the published version.
 
 ### Mock shop vs linked store
 
